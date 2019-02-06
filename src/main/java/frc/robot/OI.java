@@ -7,8 +7,12 @@
 
 package frc.robot;
 
+import frc.robot.commands.SetWristPower;
 import frc.robot.commands.Elevator.ElevatorProfiles;
+import frc.robot.commands.Extension.Extend;
+import frc.robot.commands.HatchPanelIntake.WristProfile;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.HatchPanelIntake;
 import lib.frc1747.controller.Logitech;
 
 /**
@@ -34,6 +38,11 @@ public class OI {
     driver.getButton(Logitech.RB).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.CSHIP));
     driver.getButton(Logitech.LB).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.GROUND));
     driver.getButton(Logitech.RT).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.HP2));
+    driver.getButton(Logitech.LT).whenPressed(new Extend());
+    driver.getDPad(Logitech.UP).whenPressed(new WristProfile(HatchPanelIntake.Positions.STOWED));
+    driver.getDPad(Logitech.RIGHT).whenPressed(new WristProfile(HatchPanelIntake.Positions.HANDOFF));
+    driver.getDPad(Logitech.DOWN).whenPressed(new WristProfile(HatchPanelIntake.Positions.GROUND));
+    driver.getDPad(Logitech.LEFT).whenPressed(new SetWristPower());
 
     // driver.getButton(Logitech.Y).whenPressed(new FakeAuton());
     // driver.getButton(Logitech.RB).whenPressed(new Stop());
@@ -57,5 +66,9 @@ public class OI {
 
   public Logitech getDriver() {
     return driver;
+  }
+
+  public Logitech getOperator(){
+    return operator;
   }
 }

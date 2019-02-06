@@ -5,23 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.HatchPanelIntake;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.subsystems.HatchPanelIntake;
-import frc.robot.subsystems.HatchPanelScoring;
+import lib.frc1747.controller.Logitech;
 
-public class Outtake extends Command {
-  HatchPanelScoring hatch;
-  long duration;
-  long startTime;
-  boolean state;
-  public Outtake(long duration, boolean state) {
-    this.duration = duration;
-    this.state = state;
-    hatch = HatchPanelScoring.getInstance();
-    requires(hatch);
-    startTime = System.currentTimeMillis();
+public class SetWristPower extends Command {
+  HatchPanelIntake HPIntake;
+  public SetWristPower() {
+    HPIntake = HatchPanelIntake.getInstance();
+    requires(HPIntake);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -29,29 +24,30 @@ public class Outtake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    HPIntake.setWristPower(0.3);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    hatch.setExtended(state);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (startTime - System.currentTimeMillis() >= duration);
+    return !OI.getInstance().getDriver().getDPad(Logitech.LEFT).get();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    hatch.setExtended(false);
+    HPIntake.setWristPower(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

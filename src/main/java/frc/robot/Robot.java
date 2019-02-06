@@ -18,9 +18,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.HatchPanelIntake.HPIntake;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.HatchPanelIntake;
 import lib.frc1747.subsytems.HBRSubsystem;
 
 /**
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
   Joystick joyCon = new Joystick(0);
   Elevator elevator;
   CargoIntake cargoIntake;
+  HatchPanelIntake HPIntake;
   
 
   Command m_autonomousCommand;
@@ -52,6 +55,7 @@ public class Robot extends TimedRobot {
     drivetrain = Drivetrain.getInstance();
     m_oi = new OI();
     elevator = Elevator.getInstance();
+    HPIntake = HatchPanelIntake.getInstance();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
     GambeziDashboard.set_double("Distance P", .48);
@@ -151,6 +155,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Elevator Distance", elevator.getDistance());
     SmartDashboard.putNumber("robot angle", drivetrain.getAngle());
     SmartDashboard.putNumber("angular velocity", drivetrain.getAngularVelocity());
+    GambeziDashboard.set_double("Wrist Position", HPIntake.getWristPosition());
 
     Scheduler.getInstance().run();
     SmartDashboard.putNumber("Intake Distance", cargoIntake.getCurrent());

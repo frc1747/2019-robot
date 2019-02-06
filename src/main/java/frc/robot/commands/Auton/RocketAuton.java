@@ -8,13 +8,15 @@
 package frc.robot.commands.Auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-
+import frc.robot.commands.CargoIntake.AutonIntake;
+import frc.robot.commands.CargoScoring.AutonOutake;
 import frc.robot.commands.Drivetrain.DriveProfiles;
 import frc.robot.commands.Elevator.ElevatorProfiles;
+import frc.robot.commands.Extension.AutonExtend;
+import frc.robot.commands.HatchPanelScoring.ActuateHPScoring;
+import frc.robot.subsystems.Elevator;
 import lib.frc1747.commands.MakeParallel;
 import lib.frc1747.commands.MakeSequential;
-import frc.robot.commands.HatchPanelIntake.Outtake;
-import frc.robot.subsystems.Elevator;
 
 public class RocketAuton extends CommandGroup {
   /**
@@ -28,14 +30,17 @@ public class RocketAuton extends CommandGroup {
           new ElevatorProfiles(Elevator.ElevatorPositions.HP2)
         ),
         new DriveProfiles("/home/lvuser/platform_to_rocket_far_fwd_nor.csv")
-      ), 
-      new Outtake(200, true),
+      ),  
+      new MakeParallel(
+        new AutonExtend(100),
+        new ActuateHPScoring(200, true)
+      ),
       new MakeParallel(
         new ElevatorProfiles(Elevator.ElevatorPositions.GROUND),
         new DriveProfiles("/home/lvuser/rocket_far_to_center_fwd_nor.csv")
       ),
       new DriveProfiles("/home/lvuser/center_to_pickup_fwd_nor.csv"),
-      new Outtake(200, false),
+      new ActuateHPScoring(200, false),
       new DriveProfiles("/home/lvuser/pickup_to_mid_fwd_nor.csv"),
       new MakeParallel(
         new MakeSequential(
@@ -44,8 +49,29 @@ public class RocketAuton extends CommandGroup {
         ),
         new DriveProfiles("/home/lvuser/mid_to_rocket_close_fwd_nor.csv")
       ),
-      new Outtake(200, true)
+      new MakeParallel(
+        new AutonExtend(100),
+        new ActuateHPScoring(200, true)
+      ),
+      new MakeParallel(
+        new DriveProfiles("/home/lvuser/rocket_close_to_mid_fwd_nor.csv"),
+        new ElevatorProfiles(Elevator.ElevatorPositions.GROUND)
+    ),
+    new MakeParallel(
+      new DriveProfiles("/home/lvuser/mid_to_cargo_fwd_nor.csv"),
+      new AutonIntake()
+    ),
+    new DriveProfiles("/home/lvuser/cargo_to_mid_far_fwd_nor.csv"),
+    new MakeParallel(
+      new MakeSequential(
+        new Delay(500),
+        new ElevatorProfiles(Elevator.ElevatorPositions.C2)
+      ),
+      new DriveProfiles("/home/lvuser/mid_far_to_rocket_front_fwd_nor.csv"),
+      new AutonOutake(200)
+    )
     ));
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

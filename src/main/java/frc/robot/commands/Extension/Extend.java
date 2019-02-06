@@ -5,21 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CargoIntake;
+package frc.robot.commands.Extension;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.Extension;
 import lib.frc1747.controller.Logitech;
 
-public class Outtake extends Command {
-  CargoIntake intake;
-  double power;
-  public Outtake(double power) {
-    this.power = power;
-    intake = CargoIntake.getInstance();
-    requires(intake);
+public class Extend extends Command {
+  Extension extender;
+
+  public Extend() {
+    extender = Extension.getInstance();
+    requires(extender);
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -28,25 +26,24 @@ public class Outtake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    intake.setPower(power);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SmartDashboard.putNumber("Intake Distance", intake.getCurrent());
+    extender.setExtended(true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (!OI.getInstance().getDriver().getButton(Logitech.Y).get());
+    return !OI.getInstance().getDriver().getButton(Logitech.LT).get();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    intake.setPower(0.0);
+    extender.setExtended(false);
   }
 
   // Called when another command which requires one or more of the same

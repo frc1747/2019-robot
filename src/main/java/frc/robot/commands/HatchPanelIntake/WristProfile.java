@@ -5,16 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CargoIntake;
+package frc.robot.commands.HatchPanelIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.CargoIntake;
+import frc.robot.RobotMap;
+import frc.robot.subsystems.HatchPanelIntake;
+import lib.frc1747.subsytems.HBRSubsystem;
+import lib.frc1747.motion_profile.Parameters;
 
-public class AutonIntake extends Command {
-  CargoIntake intake;
-  public AutonIntake() {
-    intake = CargoIntake.getInstance();
-    requires(intake);
+public class WristProfile extends Command {
+  HatchPanelIntake hpIntake;
+  HatchPanelIntake.Positions position;
+
+  public WristProfile(HatchPanelIntake.Positions position) {
+    hpIntake = HatchPanelIntake.getInstance();
+    requires(hpIntake);
+    this.position = position;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -22,23 +28,32 @@ public class AutonIntake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+      hpIntake.setMode(HatchPanelIntake.Follower.WRIST, HBRSubsystem.Mode.PID);
+      hpIntake.setPIDMode(HatchPanelIntake.Follower.WRIST, HBRSubsystem.PIDMode.POSITION);
+      hpIntake.setILimit(HatchPanelIntake.Follower.WRIST, 0);
+      hpIntake.setFeedforward(HatchPanelIntake.Follower.WRIST, 0.0, 0.0, 0.0);
+      hpIntake.setFeedback(HatchPanelIntake.Follower.WRIST, 0.38, 0.0, 0.0);
+      hpIntake.resetIntegrator(HatchPanelIntake.Follower.WRIST);
+      hpIntake.setEnabled(true);
+      hpIntake.setSetpoint(HatchPanelIntake.Follower.WRIST, HatchPanelIntake.positions[position.ordinal()]);
+      hpIntake.tellSetpoint(HatchPanelIntake.positions[position.ordinal()]);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    intake.setPower(0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return 1.5 < intake.getCurrent();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+     
   }
 
   // Called when another command which requires one or more of the same

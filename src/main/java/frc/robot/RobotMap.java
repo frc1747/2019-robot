@@ -43,7 +43,8 @@ public class RobotMap {
   public static final int LEFT_INTAKE_PORT = 31;  //TO BE DEPRECATED
   public static final int RIGHT_INTAKE_PORT = 32; //TO BE DEPRECATED
 
-  public static final int WRIST_TALON = 41;
+  public static final int WRIST_TALON = 51;
+  public static final boolean WRIST_INVERTED = false;
   public static final int ROLLER_TALON = 42;
 
   public static final int CARGO_SCORING_MOTOR_PORT = 31;
@@ -61,7 +62,7 @@ public class RobotMap {
   public static final int RIGHT_IR_SENSOR_PORT = 7;
   
   public static final int CARGO_SENSOR_PORT = 8;
-  public static final int CARGO_INTAKE_ENCODER_PORT = 3;
+  public static final int HATCH_INTAKE_ENCODER_PORT = 1;
 
   // solenoid ports
   public static final int HATCH_GRAB_SOLENOID = 1;
@@ -73,6 +74,9 @@ public class RobotMap {
   public static final double S_V_MAX = 16;
   public static final double A_V_MAX = 8;
   public static final double SENSOR_THRESHOLD = 2.5; //check this value
+  public static final double WRIST_ENCODER_GEAR = 60. / 84;
+  public static final double WRIST_OFFSET = 0.1;
+  public static final double GRAVITY_CONSTANT = 0.14;
   
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.

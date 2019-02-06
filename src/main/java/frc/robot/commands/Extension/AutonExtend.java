@@ -5,16 +5,20 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CargoIntake;
+package frc.robot.commands.Extension;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.Extension;
 
-public class AutonIntake extends Command {
-  CargoIntake intake;
-  public AutonIntake() {
-    intake = CargoIntake.getInstance();
-    requires(intake);
+public class AutonExtend extends Command {
+  Extension extender;
+  long duration;
+  long startTime;
+
+  public AutonExtend(long duration) {
+    extender = Extension.getInstance();
+    requires(extender);
+    this.duration = duration;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -22,28 +26,31 @@ public class AutonIntake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    startTime = System.currentTimeMillis();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    intake.setPower(0.5);
+    extender.setExtended(true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return 1.5 < intake.getCurrent();
+    return (System.currentTimeMillis() - startTime > duration);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    extender.setExtended(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

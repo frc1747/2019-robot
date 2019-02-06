@@ -5,16 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CargoIntake;
+package frc.robot.commands.HatchPanelScoring;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.CargoIntake;
+// import frc.robot.subsystems.HatchPanelIntake;
+import frc.robot.subsystems.HatchPanelScoring;
 
-public class AutonIntake extends Command {
-  CargoIntake intake;
-  public AutonIntake() {
-    intake = CargoIntake.getInstance();
-    requires(intake);
+public class ActuateHPScoring extends Command {
+  HatchPanelScoring hatch;
+  long duration;
+  long startTime;
+  boolean state;
+  public ActuateHPScoring(long duration, boolean state) {
+    this.duration = duration;
+    this.state = state;
+    hatch = HatchPanelScoring.getInstance();
+    requires(hatch);
+    startTime = System.currentTimeMillis();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -27,18 +34,19 @@ public class AutonIntake extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    intake.setPower(0.5);
+    hatch.setExtended(state);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return 1.5 < intake.getCurrent();
+    return (startTime - System.currentTimeMillis() >= duration);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    hatch.setExtended(false);
   }
 
   // Called when another command which requires one or more of the same

@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.RobotMap;
@@ -26,20 +27,33 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   AnalogInput sensorLeft;
   AnalogInput sensorRight;
   AnalogInput encoder;
+  double wristOffset;
+  double setPoint;
+  public static double[] positions = {3.7, Math.PI - 0.1, Math.PI / 2};
 
   public HatchPanelIntake(){
     //This subsystem is not configured for proper PID usage, I just made the basic parts
     wrist = new TalonSRX(RobotMap.WRIST_TALON);
+    wrist.setInverted(RobotMap.WRIST_INVERTED);
     roller = new TalonSRX(RobotMap.ROLLER_TALON);
     sensorLeft = new AnalogInput(RobotMap.LEFT_IR_SENSOR_PORT);
     sensorRight = new AnalogInput(RobotMap.RIGHT_IR_SENSOR_PORT);
-    encoder = new AnalogInput(RobotMap.CARGO_INTAKE_ENCODER_PORT);
+    encoder = new AnalogInput(RobotMap.HATCH_INTAKE_ENCODER_PORT);
+    wristOffset = RobotMap.WRIST_OFFSET;
   }
 
-  
+
 
   public enum Follower{
-    WRIST;
+    WRIST, NOTHING;
+  }
+
+  public enum Positions{
+    STOWED, HANDOFF, GROUND;
+  }
+
+  public void tellSetpoint(double setpoint) {
+    setPoint = setpoint;
   }
   @Override
   public void initDefaultCommand() {
@@ -56,7 +70,11 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   }
 
   public double getWristPosition() {
-    return encoder.getVoltage();
+    if (RobotMap.WRIST_ENCODER_GEAR * (-encoder.getVoltage()) * 2 * Math.PI/5 - wristOffset >= 0) {
+			return RobotMap.WRIST_ENCODER_GEAR * (-encoder.getVoltage()) * 2 * Math.PI/5 - wristOffset;
+		} else {
+			return RobotMap.WRIST_ENCODER_GEAR * (5 + -encoder.getVoltage()) * 2 * Math.PI/5 - wristOffset;
+		}
   }
 
   public double getRollerSpeed() {
@@ -82,7 +100,24 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
     return hatch;
   }
   public void pidWrite(double[] power) {
-    wrist.set(ControlMode.PercentOutput, power[0]);
+    if (setPoint == positions[2] && Math.abs(getWristPosition() - setPoint) < Math.PI / 12) {
+      wrist.set(ControlMode.PercentOutput, 0);
+      GambeziDashboard.set_double("Wrist Power", 0);
+    }
+    else if (setPoint == positions[0] && Math.abs(getWristPosition() - setPoint) < Math.PI / 12) {
+      wrist.set(ControlMode.PercentOutput, 0);
+      GambeziDashboard.set_double("Wrist Power", 0);
+    }
+    // else if (setPoint == positions[1]) {
+    //   wrist.set(ControlMode.PercentOutput, power[0] + -Math.sin(getWristPosition()) * 0.07);
+    //   GambeziDashboard.set_double("Wrist Power", power[0] + -Math.sin(getWristPosition()) * 0.07);
+    // }
+    else {
+      wrist.set(ControlMode.PercentOutput, power[0] + Math.sin(getWristPosition()) * 0.14);
+      GambeziDashboard.set_double("Wrist Power", power[0] + Math.sin(getWristPosition()) * 0.14);
+    }
+
+    
     // SmartDashboard.putNumber("distance setpoint", power[0]);
     // SmartDashboard.putNumber("angle setpoint", power[1]);
   }
@@ -101,5 +136,7 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   }
 
   public void internalVariablesWrite(double[] vars) {
+    GambeziDashboard.set_double("Wrist Setpoint", vars[0]);
+    GambeziDashboard.set_double("Wrist Supposed Setpoint", setPoint);
   }
 }

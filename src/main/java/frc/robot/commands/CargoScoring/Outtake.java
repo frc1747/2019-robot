@@ -5,16 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.CargoIntake;
+package frc.robot.commands.CargoScoring;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.CargoScoring;
+import lib.frc1747.controller.Logitech;
 
-public class AutonIntake extends Command {
-  CargoIntake intake;
-  public AutonIntake() {
-    intake = CargoIntake.getInstance();
+public class Outtake extends Command {
+  CargoScoring intake;
+  double power;
+  public Outtake(double power) {
+    this.power = power;
+    intake = CargoScoring.getInstance();
     requires(intake);
+
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -22,28 +29,30 @@ public class AutonIntake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    intake.setPower(power);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    intake.setPower(0.5);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return 1.5 < intake.getCurrent();
+    return (!OI.getInstance().getDriver().getButton(Logitech.Y).get());
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    intake.setPower(0.0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }
