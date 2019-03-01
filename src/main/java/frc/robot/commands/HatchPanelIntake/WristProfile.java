@@ -32,7 +32,7 @@ public class WristProfile extends Command {
       hpIntake.setPIDMode(HatchPanelIntake.Follower.WRIST, HBRSubsystem.PIDMode.POSITION);
       hpIntake.setILimit(HatchPanelIntake.Follower.WRIST, 0);
       hpIntake.setFeedforward(HatchPanelIntake.Follower.WRIST, 0.0, 0.0, 0.0);
-      hpIntake.setFeedback(HatchPanelIntake.Follower.WRIST, 0.38, 0.0, 0.0);
+      hpIntake.setFeedback(HatchPanelIntake.Follower.WRIST, 0.3, 0.0, 0.0);
       hpIntake.resetIntegrator(HatchPanelIntake.Follower.WRIST);
       hpIntake.setEnabled(true);
       hpIntake.setSetpoint(HatchPanelIntake.Follower.WRIST, HatchPanelIntake.positions[position.ordinal()]);
@@ -47,18 +47,18 @@ public class WristProfile extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (Math.abs(hpIntake.getWristPosition()) - HatchPanelIntake.positions[position.ordinal()] < Math.PI/12);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-     
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

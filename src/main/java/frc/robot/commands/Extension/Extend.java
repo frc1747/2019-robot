@@ -10,7 +10,7 @@ package frc.robot.commands.Extension;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Extension;
-import lib.frc1747.controller.Logitech;
+import lib.frc1747.controller.Xbox;
 
 public class Extend extends Command {
   Extension extender;
@@ -37,7 +37,7 @@ public class Extend extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return !OI.getInstance().getDriver().getButton(Logitech.LT).get();
+    return !OI.getInstance().getDriver().getDPad(Xbox.UP).get();
   }
 
   // Called once after isFinished returns true

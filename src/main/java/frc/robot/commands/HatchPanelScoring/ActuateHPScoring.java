@@ -8,8 +8,10 @@
 package frc.robot.commands.HatchPanelScoring;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 // import frc.robot.subsystems.HatchPanelIntake;
 import frc.robot.subsystems.HatchPanelScoring;
+import lib.frc1747.controller.Xbox;
 
 public class ActuateHPScoring extends Command {
   HatchPanelScoring hatch;
@@ -21,7 +23,6 @@ public class ActuateHPScoring extends Command {
     this.state = state;
     hatch = HatchPanelScoring.getInstance();
     requires(hatch);
-    startTime = System.currentTimeMillis();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -29,6 +30,7 @@ public class ActuateHPScoring extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    startTime = System.currentTimeMillis();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -40,18 +42,18 @@ public class ActuateHPScoring extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (startTime - System.currentTimeMillis() >= duration);
+    return System.currentTimeMillis() - startTime > duration;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    hatch.setExtended(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

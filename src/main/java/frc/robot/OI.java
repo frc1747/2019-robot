@@ -7,54 +7,72 @@
 
 package frc.robot;
 
-import frc.robot.commands.SetWristPower;
+import frc.robot.commands.CargoIntake.Intake;
+import frc.robot.commands.CargoScoring.Outtake;
+import frc.robot.commands.Drivetrain.DriveProfiles;
 import frc.robot.commands.Elevator.ElevatorProfiles;
-import frc.robot.commands.Extension.Extend;
-import frc.robot.commands.HatchPanelIntake.WristProfile;
+import frc.robot.commands.Elevator.HatchFinal;
+import frc.robot.commands.Elevator.ZeroElevator;
+import frc.robot.commands.HatchPanelIntake.GroundIntake2;
+import frc.robot.commands.HatchPanelIntake.Handoff;
+import frc.robot.commands.HatchPanelScoring.Beak;
+import frc.robot.commands.HatchPanelScoring.HPScore;
+// import frc.robot.commands.HatchPanelScoring.WeakAuton;
 import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.HatchPanelIntake;
-import lib.frc1747.controller.Logitech;
+import lib.frc1747.controller.Xbox;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  Logitech driver;
-  Logitech operator;
+  Xbox driver;
+  Xbox operator;
   static OI oi;
 
   public OI() {
-    driver = new Logitech(RobotMap.DRIVER_PORT);
-    operator = new Logitech(RobotMap.OPERATOR_PORT);
+    driver = new Xbox(RobotMap.DRIVER_PORT);
+    operator = new Xbox(RobotMap.OPERATOR_PORT);
     driver();
+    operator();
   }
+  public void operator(){
+    operator.getButton(Xbox.Y).whenPressed(new ElevatorProfiles(3));
+    operator.getButton(Xbox.B).whenPressed(new ElevatorProfiles(1));
+    operator.getButton(Xbox.A).whenPressed(new ElevatorProfiles(4));
+    operator.getButton(Xbox.X).whenPressed(new ElevatorProfiles(2));
+    operator.getDPad(Xbox.UP).whenPressed(new Intake(0, 0.7, false));
+    operator.getDPad(Xbox.UP).whenReleased(new Intake(0, 0, false));
 
+    operator.getButton(Xbox.START).whenPressed(new ZeroElevator());
+    // operator.getButton(Xbox.BACK).whenPressed(new ManualWrist());
+  }
   public void driver() {
-    driver.getButton(Logitech.A).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.C1));
-    driver.getButton(Logitech.B).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.HP1));
-    driver.getButton(Logitech.X).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.C2));
-    driver.getButton(Logitech.Y).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.CFLOOR));
-    driver.getButton(Logitech.RB).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.CSHIP));
-    driver.getButton(Logitech.LB).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.GROUND));
-    driver.getButton(Logitech.RT).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.HP2));
-    driver.getButton(Logitech.LT).whenPressed(new Extend());
-    driver.getDPad(Logitech.UP).whenPressed(new WristProfile(HatchPanelIntake.Positions.STOWED));
-    driver.getDPad(Logitech.RIGHT).whenPressed(new WristProfile(HatchPanelIntake.Positions.HANDOFF));
-    driver.getDPad(Logitech.DOWN).whenPressed(new WristProfile(HatchPanelIntake.Positions.GROUND));
-    driver.getDPad(Logitech.LEFT).whenPressed(new SetWristPower());
+    driver.getButton(Xbox.A).whenPressed(new HPScore());
+    // driver.getButton(Xbox.A).whenPressed(new SetWristPower());
 
-    // driver.getButton(Logitech.Y).whenPressed(new FakeAuton());
-    // driver.getButton(Logitech.RB).whenPressed(new Stop());
-    // driver.getButton(Logitech.LT).whenPressed(new DriveSetSpeed());
-    // driver.getDPad(Logitech.UP).whenPressed(new DriveProfiles("/home/lvuser/platform_to_rocket_far_fwd_nor.csv"));
-    // driver.getDPad(Logitech.DOWN).whenPressed(new DriveProfiles("/home/lvuser/big_s_curve_fwd_nor.csv"));
-    // driver.getDPad(Logitech.RIGHT).whenPressed(new DriveProfiles("/home/lvuser/swerve_fwd_nor.csv"));
+    driver.getButton(Xbox.X).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.HP1));
+    // driver.getButton(Xbox.X).whenPressed(new LiftElevator());
+    // driver.getButton(Xbox.Y).whenPressed(new WeakAuton());
+    // driver.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/center_to_pickup_2_fwd_nor.csv"));
+    // driver.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/staight_fwd_nor.csv"));
 
-    // driver.getButton(Logitech.B).whenPressed(new DriveDistance(-5));
-    // driver.getButton(Logitech.Y).whenPressed(new TakeOut(-0.4));
-    // driver.getButton(Logitech.X).whenPressed(new TakeIn(0.4));
-    // GROUND, CFLOOR, HP1, C1, CSHIP, HP2, C2;
+
+
+    driver.getRTButton().whenPressed(new Intake(0.7, 0.7, true));
+    driver.getRTButton().whenReleased(new Intake(0, 0, false));
+
+    // driver.getRTButton().whenPressed(new Outtake(1));
+    driver.getButton(Xbox.RB).whenPressed(new Outtake(-1));
+    driver.getLTButton().whenPressed(new GroundIntake2());//
+    driver.getButton(Xbox.LB).whenPressed(new Beak());
+
+    driver.getDPad(Xbox.UP).whenPressed(new Handoff());
+    driver.getDPad(Xbox.RIGHT).whenPressed(new HatchFinal());
+
+
+
+
   }
 
   public static OI getInstance() {
@@ -64,11 +82,11 @@ public class OI {
     return oi;
   }
 
-  public Logitech getDriver() {
+  public Xbox getDriver() {
     return driver;
   }
 
-  public Logitech getOperator(){
+  public Xbox getOperator(){
     return operator;
   }
 }

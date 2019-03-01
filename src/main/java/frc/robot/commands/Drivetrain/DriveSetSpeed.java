@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain;
-import lib.frc1747.controller.Logitech;
+import lib.frc1747.controller.Xbox;
 import lib.frc1747.subsytems.HBRSubsystem;
 
 public class DriveSetSpeed extends Command {
@@ -55,7 +55,7 @@ public class DriveSetSpeed extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (!OI.getInstance().getDriver().getButton(Logitech.LT).get());
+    return (!OI.getInstance().getDriver().getButton(Xbox.LT).get());
   }
 
   // Called once after isFinished returns true

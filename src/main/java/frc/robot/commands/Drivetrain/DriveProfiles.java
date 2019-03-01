@@ -41,16 +41,16 @@ public class DriveProfiles extends Command {
     drivetrain.setMode(Drivetrain.Follower.DISTANCE, HBRSubsystem.Mode.FOLLOWER);
     drivetrain.setPIDMode(Drivetrain.Follower.DISTANCE, HBRSubsystem.PIDMode.POSITION);
     drivetrain.setILimit(Drivetrain.Follower.DISTANCE, 0);
-    drivetrain.setFeedforward(Drivetrain.Follower.DISTANCE, 0, 0.06, 0.02);
-    drivetrain.setFeedback(Drivetrain.Follower.DISTANCE, GambeziDashboard.get_double("Distance P"), 0, GambeziDashboard.get_double("Distance d"));
+    drivetrain.setFeedforward(Drivetrain.Follower.DISTANCE, 0, GambeziDashboard.get_double("Drivetrain/Distance kV"), GambeziDashboard.get_double("Drivetrain/Distance kA"));
+    drivetrain.setFeedback(Drivetrain.Follower.DISTANCE, GambeziDashboard.get_double("Drivetrain/Distance P"), 0, GambeziDashboard.get_double("Drivetrain/Distance D"));
     drivetrain.resetIntegrator(Drivetrain.Follower.DISTANCE);
 
     // angle PID
     drivetrain.setMode(Drivetrain.Follower.ANGLE, HBRSubsystem.Mode.FOLLOWER);
     drivetrain.setPIDMode(Drivetrain.Follower.ANGLE, HBRSubsystem.PIDMode.POSITION);
     drivetrain.setILimit(Drivetrain.Follower.ANGLE, 0);
-    drivetrain.setFeedforward(Drivetrain.Follower.ANGLE, 0, 0.057, 0.0195);
-    drivetrain.setFeedback(Drivetrain.Follower.ANGLE, GambeziDashboard.get_double("Angle p"), 0, GambeziDashboard.get_double("Angle d"));
+    drivetrain.setFeedforward(Drivetrain.Follower.ANGLE, 0, GambeziDashboard.get_double("Drivetrain/Angle kV"), GambeziDashboard.get_double("Drivetrain/Angle kA"));
+    drivetrain.setFeedback(Drivetrain.Follower.ANGLE, GambeziDashboard.get_double("Drivetrain/Angle P"), 0, GambeziDashboard.get_double("Drivetrain/Angle D"));
     drivetrain.resetIntegrator(Drivetrain.Follower.ANGLE);
 
     drivetrain.setProfile(Drivetrain.Follower.DISTANCE,profile[0]);

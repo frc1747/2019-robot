@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -22,11 +22,12 @@ public class CargoScoring extends Subsystem {
   // here. Call these from Commands.
   static CargoScoring cargo;
   TalonSRX motor;
-  AnalogInput sensor;
+  DigitalInput sensor;
 
   public CargoScoring() {
     motor = new TalonSRX(RobotMap.CARGO_SCORING_MOTOR_PORT);
-    sensor = new AnalogInput(RobotMap.CARGO_SENSOR_PORT);
+    motor.setInverted(true);
+    sensor = new DigitalInput(RobotMap.CARGO_SENSOR_PORT);
   }
 
   @Override
@@ -40,8 +41,9 @@ public class CargoScoring extends Subsystem {
   }
 
   public Boolean sensorActivated() {
-    return (sensor.getVoltage() > RobotMap.SENSOR_THRESHOLD);
+    return sensor.get();
   }
+
   public static CargoScoring getInstance(){
     if(cargo == null){
       cargo = new CargoScoring();

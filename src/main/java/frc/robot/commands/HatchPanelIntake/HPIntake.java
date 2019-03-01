@@ -9,14 +9,13 @@ package frc.robot.commands.HatchPanelIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
-import frc.robot.subsystems.HatchPanelIntake;
-import lib.frc1747.controller.Logitech;
+import frc.robot.subsystems.Roller;
 
 public class HPIntake extends Command {
-  HatchPanelIntake hpintake;
+  Roller hpintake;
 
   public HPIntake() {
-    hpintake = HatchPanelIntake.getInstance();
+    hpintake = Roller.getInstance();
     requires(hpintake);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -36,7 +35,7 @@ public class HPIntake extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return !OI.getInstance().getOperator().getButton(Logitech.X).get();
+    return !OI.getInstance().getDriver().getLTButton().get();
   }
 
   // Called once after isFinished returns true
@@ -49,5 +48,6 @@ public class HPIntake extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

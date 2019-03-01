@@ -9,6 +9,7 @@ package frc.robot.commands.CargoIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.CargoIntake;
+import frc.robot.subsystems.CargoScoring;
 
 public class AutonIntake extends Command {
   CargoIntake intake;

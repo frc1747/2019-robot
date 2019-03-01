@@ -12,15 +12,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.CargoScoring;
-import lib.frc1747.controller.Logitech;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Extension;
+import lib.frc1747.controller.Xbox;
 
 public class Outtake extends Command {
   CargoScoring intake;
+  Extension extend;
   double power;
   public Outtake(double power) {
+    extend = Extension.getInstance();
     this.power = power;
     intake = CargoScoring.getInstance();
     requires(intake);
+    requires(extend);
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -29,7 +34,14 @@ public class Outtake extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    intake.setPower(power);
+    if(Elevator.getInstance().getSetPoint() == 34){
+      extend.setExtended(false);
+      intake.setPower(-0.5);
+    }else{
+      extend.setExtended(true);
+      intake.setPower(power);
+
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -40,12 +52,13 @@ public class Outtake extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (!OI.getInstance().getDriver().getButton(Logitech.Y).get());
+    return (!OI.getInstance().getDriver().getButton(Xbox.RB).get() && !OI.getInstance().getOperator().getDPad(Xbox.UP).get());  
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    extend.setExtended(false);
     intake.setPower(0.0);
   }
 

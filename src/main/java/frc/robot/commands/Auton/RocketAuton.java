@@ -27,16 +27,16 @@ public class RocketAuton extends CommandGroup {
       new MakeParallel(
         new MakeSequential(
           new Delay(2000),
-          new ElevatorProfiles(Elevator.ElevatorPositions.HP2)
+          new ElevatorProfiles(2)
         ),
         new DriveProfiles("/home/lvuser/platform_to_rocket_far_fwd_nor.csv")
       ),  
       new MakeParallel(
-        new AutonExtend(100),
+        // new AutonExtend(100),
         new ActuateHPScoring(200, true)
       ),
       new MakeParallel(
-        new ElevatorProfiles(Elevator.ElevatorPositions.GROUND),
+        new ElevatorProfiles(1),
         new DriveProfiles("/home/lvuser/rocket_far_to_center_fwd_nor.csv")
       ),
       new DriveProfiles("/home/lvuser/center_to_pickup_fwd_nor.csv"),
@@ -45,17 +45,17 @@ public class RocketAuton extends CommandGroup {
       new MakeParallel(
         new MakeSequential(
           new Delay(1000),
-          new ElevatorProfiles(Elevator.ElevatorPositions.HP2)
+          new ElevatorProfiles(2)
         ),
         new DriveProfiles("/home/lvuser/mid_to_rocket_close_fwd_nor.csv")
       ),
       new MakeParallel(
-        new AutonExtend(100),
+        // new AutonExtend(100),
         new ActuateHPScoring(200, true)
       ),
       new MakeParallel(
         new DriveProfiles("/home/lvuser/rocket_close_to_mid_fwd_nor.csv"),
-        new ElevatorProfiles(Elevator.ElevatorPositions.GROUND)
+        new ElevatorProfiles(1)
     ),
     new MakeParallel(
       new DriveProfiles("/home/lvuser/mid_to_cargo_fwd_nor.csv"),
@@ -65,10 +65,10 @@ public class RocketAuton extends CommandGroup {
     new MakeParallel(
       new MakeSequential(
         new Delay(500),
-        new ElevatorProfiles(Elevator.ElevatorPositions.C2)
+        new ElevatorProfiles(2)
       ),
       new DriveProfiles("/home/lvuser/mid_far_to_rocket_front_fwd_nor.csv"),
-      new AutonOutake(200)
+      new AutonOutake(200, -0.5)
     )
     ));
 

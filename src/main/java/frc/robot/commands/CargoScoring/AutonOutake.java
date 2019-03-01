@@ -16,11 +16,13 @@ public class AutonOutake extends Command {
   CargoScoring scoring;
   long duration;
   long startTime;
+  double power;
 
-  public AutonOutake(long duration) {
+  public AutonOutake(long duration, double power) {
     scoring = CargoScoring.getInstance();
     requires(scoring);
     this.duration = duration;
+    this.power = power;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -34,7 +36,7 @@ public class AutonOutake extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    scoring.setPower(.5);
+    scoring.setPower(power);
   }
 
   // Make this return true when this Command no longer needs to run execute()

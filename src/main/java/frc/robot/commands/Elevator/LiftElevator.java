@@ -8,9 +8,10 @@
 package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.Elevator;
-import lib.frc1747.controller.Logitech;
+import lib.frc1747.controller.Xbox;
 import lib.frc1747.subsytems.HBRSubsystem;
 
 public class LiftElevator extends Command {
@@ -19,36 +20,29 @@ public class LiftElevator extends Command {
   public LiftElevator() {
     elevator = Elevator.getInstance();
     requires(elevator);
-     setInterruptible(false);
   }
 
   @Override
   protected void initialize() {
-    elevator.setMode(Elevator.Follower.ELEVATOR, HBRSubsystem.Mode.PID);
-    elevator.setPIDMode(Elevator.Follower.ELEVATOR, HBRSubsystem.PIDMode.POSITION);
-    elevator.setILimit(Elevator.Follower.ELEVATOR, 0);
-    elevator.setFeedforward(Elevator.Follower.ELEVATOR, 0, 0, 0);
-    elevator.setFeedback(Elevator.Follower.ELEVATOR, 0.1, 0, 0.0045);
-    elevator.resetIntegrator(Elevator.Follower.ELEVATOR);
-    elevator.setEnabled(true);
-    elevator.setSetpoint(Elevator.Follower.ELEVATOR, 24);
+    elevator.setPower(0.7);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    SmartDashboard.putNumber("Elevator Position", elevator.getDistance());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-  //  return !OI.getInstance().getDriver().getButton(Logitech.A).get();
-      return false;
+   return !OI.getInstance().getDriver().getButton(Xbox.X).get();
+      // return !OI;
   }
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    elevator.setEnabled(false);
+    elevator.setPower(0);
   }
 
   // Called when another command which requires one or more of the same

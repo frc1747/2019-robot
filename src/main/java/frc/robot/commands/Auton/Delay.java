@@ -13,7 +13,7 @@ public class Delay extends Command {
   long startTime;
   long duration;
   public Delay(long duration) {
-    startTime = System.currentTimeMillis();
+    this.duration = duration;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -21,6 +21,7 @@ public class Delay extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    startTime = System.currentTimeMillis();
   }
 
   // Called repeatedly when this Command is scheduled to run

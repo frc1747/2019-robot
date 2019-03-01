@@ -56,6 +56,8 @@ public abstract class Controller {
 	public Joystick getStick() {
 		return stick;
 	}
+
+	
 	
 	public boolean getDPADButton(int Angle){
 		return /*getStick().getPOV(0) == Angle;*/ getStick().getPOV() == Angle;

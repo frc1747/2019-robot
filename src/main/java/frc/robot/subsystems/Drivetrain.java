@@ -14,11 +14,12 @@ import com.kauailabs.navx.frc.AHRS;
 import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import frc.robot.commands.setLeftPIDPower;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.Drivetrain.Drive;
 import frc.robot.commands.Drivetrain.DriveWithJoysticks;
 import lib.frc1747.subsytems.HBRSubsystem;
 
@@ -32,11 +33,10 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
 
   public Drivetrain() {
     super(RobotMap.DT);
-    left = new DriveSide(RobotMap.LEFT_MOTOR_PORTS, RobotMap.LEFT_DRIVE_TALON, false, RobotMap.VICTOR_INVERT_LEFT, 0,
-        1);
-    right = new DriveSide(RobotMap.RIGHT_MOTOR_PORTS, RobotMap.RIGHT_DRIVE_TALON, true, RobotMap.VICTOR_INVERT_RIGHT, 2,
-        3);
-    gyro = new AHRS(SPI.Port.kMXP);
+    left = new DriveSide(RobotMap.DRIVE_LEFT_MOTOR_PORTS, RobotMap.DRIVE_MOTOR_INVERT_LEFT, 0, 1);
+    right = new DriveSide(RobotMap.DRIVE_RIGHT_MOTOR_PORTS, RobotMap.DRIVE_MOTOR_INVERT_RIGHT, 3, 2);
+    // gyro = new AHRS(SPI.Port.);
+    gyro = new AHRS(SerialPort.Port.kUSB);
   }
 
   public enum Follower {
@@ -79,7 +79,7 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
   }
 
   public double getLeftDistance() {
-    return left.getDistance() / RobotMap.LEFT_ENCODER_SCALING;
+    return left.getDistance()/ RobotMap.LEFT_ENCODER_SCALING;
     // return left.getSpeed();
   }
 
@@ -94,6 +94,14 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
 
   public double getRightSpeed() {
     return right.getSpeed() / RobotMap.RIGHT_ENCODER_SCALING;
+  }
+  
+  public double getRightCurrent(){
+    return right.getCurrent();
+  }
+
+  public double getLeftCurrent(){
+    return left.getCurrent();
   }
 
   public double averageSpeed() {
@@ -119,6 +127,7 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
     arcadeDrive(power[0], -power[1]);
     GambeziDashboard.set_double("Power 0", power[0]);
     GambeziDashboard.set_double("Power 1", power[1]);
+
     // SmartDashboard.putNumber("distance setpoint", power[0]);
     // SmartDashboard.putNumber("angle setpoint", power[1]);
   }
@@ -150,26 +159,35 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
   public void arcadeDrive(double leftVert, double rightHoriz) {
     setLeftPower(leftVert + rightHoriz);
     setRightPower(leftVert - rightHoriz);
+    GambeziDashboard.set_double("Left Drive Power", leftVert + rightHoriz);
+    GambeziDashboard.set_double("Right Drive Power", leftVert - rightHoriz);
+
     SmartDashboard.putNumber("left power", leftVert + rightHoriz);
     SmartDashboard.putNumber("right power", leftVert - rightHoriz);
   }
 
   public class DriveSide {
-    VictorSPX[] victors;
+    VictorSPX victor;
+    VictorSPX victor2;
     TalonSRX talon;
+    TalonSRX talon2;
     Encoder encoder;
 
-    public DriveSide(int[] victorPorts, int talonPort, boolean talonInverted, boolean[] victorInverted, int encport,
-        int encport2) {
-      victors = new VictorSPX[3];
-      for (int i = 0; i < 3; i++) {
-        victors[i] = new VictorSPX(victorPorts[i]);
-        victors[i].setInverted(victorInverted[i]);
-      }
-      talon = new TalonSRX(talonPort);
-      talon.setInverted(talonInverted);
+    public DriveSide(int[] motorPorts, boolean[] motorInverted, int encport, int encport2) {
+      talon = new TalonSRX(motorPorts[0]);
+      talon.setInverted(motorInverted[0]);
+      talon2 = new TalonSRX(motorPorts[1]);
+      talon2.setInverted(motorInverted[1]);
+      victor = new VictorSPX(motorPorts[2]);
+      victor.setInverted(motorInverted[2]);
+      victor2 = new VictorSPX(motorPorts[3]);
+      victor2.setInverted(motorInverted[3]);
       encoder = new Encoder(encport, encport2);
 
+    }
+
+    public double getCurrent(){
+      return talon.getOutputCurrent() + talon2.getOutputCurrent();
     }
 
     public double getSpeed() {
@@ -185,10 +203,10 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
     }
 
     public void setPower(double power) {
-      for (int i = 0; i < 3; i++) {
-        victors[i].set(ControlMode.PercentOutput, power);
-      }
-      talon.set(ControlMode.PercentOutput, power);
+      victor.set(ControlMode.PercentOutput, power);
+      victor2.set(ControlMode.PercentOutput, power);
+      // talon.set(ControlMode.PercentOutput, power);
+      talon2.set(ControlMode.PercentOutput, power);
     }
 
     public double getDistance() {

@@ -9,10 +9,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.Elevator.ManualElevator;
 import lib.frc1747.subsytems.HBRSubsystem;
 
 /**
@@ -23,7 +24,8 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
   private TalonSRX leftmotor;
   private TalonSRX rightmotor;
   private Encoder encoder;
-  public static double[] positions = {0, 6.5, 19, 27.5, 38, 47, 55.5};
+  double setPoint;
+  public static double[] positions = {0, 16.5, 45-11, 47-19+3, 55.5-11, 75-19+4, 87.5-11};
   static Elevator elevator;
 
     public Elevator(){
@@ -32,7 +34,7 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
       rightmotor = new TalonSRX(RobotMap.RIGHT_ELEVATOR_PORT);
       leftmotor.setInverted(RobotMap.LEFT_ELEVATOR_INVERTED);
       rightmotor.setInverted(RobotMap.RIGHT_ELEVATOR_INVERTED);
-      encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_PORT, RobotMap.ELEVATOR_ENCODER_PORT_2);
+      encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_PORT_2, RobotMap.ELEVATOR_ENCODER_PORT);
       //put in 10 turn potentiometer
     } 
 
@@ -41,9 +43,14 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
     }
     
     public enum ElevatorPositions{
-      GROUND, CFLOOR, HP1, C1, CSHIP, HP2, C2;
+      HP1, C1, CSHIP, HP2, C2, HP3, C3;
     }
-    
+    public double getVoltage(){
+      return leftmotor.getMotorOutputVoltage();
+    }
+    public double getCurrent(){
+      return leftmotor.getOutputCurrent();
+    }
     public void resetEncoder() {
       encoder.reset();
     }
@@ -51,10 +58,22 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
     public double getElevatorSpeed() {
       return encoder.getRate() / RobotMap.ELEVATOR_SCALING;
     }
+    public void tellSetpoint(double setPoint){
+      this.setPoint = setPoint;
+    }
+    public double getSetPoint(){
+      return setPoint;
+    }
     
     public void pidWrite(double[] power) {
-      setPower(power[0] + 0.04);
-      SmartDashboard.putNumber("Elevator Power", power[0]);
+      if(getDistance() <= 5 && setPoint < 5){
+        setPower(0);
+      }else{
+        setPower(power[0] + 0.3);
+        GambeziDashboard.set_double("elev voltage", elevator.getVoltage());
+        GambeziDashboard.set_double("elev voltage", elevator.getCurrent());
+      }
+      GambeziDashboard.set_double("Elevator/PIDWrite", power[0]);
     }
     
     public void errorsWrite(double[] errors) {
@@ -71,14 +90,12 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
     }
     
     public void internalVariablesWrite(double[] vars) {
-      SmartDashboard.putNumber("setpoint", vars[0]);
-      SmartDashboard.putNumber("actualposition", vars[1]);
-      SmartDashboard.putNumber("setpoint2", vars[2]);
-      SmartDashboard.putNumber("actualposition2", vars[3]);
+      GambeziDashboard.set_double("Elevator/setpoint", vars[0]);
+      GambeziDashboard.set_double("Elevator/actualposition", vars[1]);
     }
     
     public void setPower(double power){
-       leftmotor.set(ControlMode.PercentOutput, power);
+      leftmotor.set(ControlMode.PercentOutput, power);
       rightmotor.set(ControlMode.PercentOutput, power);
     }
     
@@ -101,6 +118,7 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new ManualElevator());
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }

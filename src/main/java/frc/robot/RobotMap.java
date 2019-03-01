@@ -18,65 +18,63 @@ public class RobotMap {
   //TODO: We REALLY need to organize these...
 
   // invertion boolean values
-  public static final boolean[] VICTOR_INVERT_LEFT = {false, false, false};
-  public static final boolean[] VICTOR_INVERT_RIGHT = {true, true, true};
+  public static final boolean[] DRIVE_MOTOR_INVERT_LEFT = {false, false, false, false};
+  public static final boolean[] DRIVE_MOTOR_INVERT_RIGHT = {true, true, false, true};
   public static final boolean LEFT_INTAKE_INVERTED = true;
   public static final boolean RIGHT_INTAKE_INVERTED = false;
   public static final boolean LEFT_ELEVATOR_INVERTED = true;
-  public static final boolean RIGHT_ELEVATOR_INVERTED = false;
+  public static final boolean RIGHT_ELEVATOR_INVERTED = true;
 
 
   // encoder scalings
-  public static final double LEFT_ENCODER_SCALING = 1284.6;
-  public static final double RIGHT_ENCODER_SCALING = 1294;
-  public static final double ELEVATOR_SCALING = 187.694;
+  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10;
+  public static final double RIGHT_ENCODER_SCALING = 1280.8;
+  public static final double ELEVATOR_SCALING = 468.58/4;
 
   // motor ports
-  public static final int LEFT_DRIVE_TALON = 1;
-  public static final int RIGHT_DRIVE_TALON = 11;
-  public static final int[] LEFT_MOTOR_PORTS = {2, 3, 4};
-  public static final int[] RIGHT_MOTOR_PORTS = {12, 13, 14};
+  public static final int[] DRIVE_LEFT_MOTOR_PORTS = {1, 2, 3, 4};
+  public static final int[] DRIVE_RIGHT_MOTOR_PORTS = {11, 12, 13, 14};
 
   public static final int LEFT_ELEVATOR_PORT = 21;
   public static final int RIGHT_ELEVATOR_PORT = 22;
 
-  public static final int LEFT_INTAKE_PORT = 31;  //TO BE DEPRECATED
-  public static final int RIGHT_INTAKE_PORT = 32; //TO BE DEPRECATED
+  // public static final int LEFT_INTAKE_PORT = 34;  //TO BE DEPRECATED
+  // public static final int RIGHT_INTAKE_PORT = 35; //TO BE DEPRECATED
 
-  public static final int WRIST_TALON = 51;
+  public static final int WRIST_TALON = 41;
   public static final boolean WRIST_INVERTED = false;
   public static final int ROLLER_TALON = 42;
 
   public static final int CARGO_SCORING_MOTOR_PORT = 31;
   public static final int CARGO_INTAKE_MOTOR_PORT = 32;
 
-  // rio ports
   public static final int DRIVER_PORT = 0;
   public static final int OPERATOR_PORT = 1;
-
+  
+  // rio ports
   public static final int ELEVATOR_ENCODER_PORT = 4;
   public static final int ELEVATOR_ENCODER_PORT_2 = 5;
 
   public static final int INTAKE_SENSOR_PORT = 2; //TO BE DEPRECATED
-  public static final int LEFT_IR_SENSOR_PORT = 6;
-  public static final int RIGHT_IR_SENSOR_PORT = 7;
+  // public static final int LEFT_IR_SENSOR_PORT = 6;
+  // public static final int RIGHT_IR_SENSOR_PORT = 7;
   
-  public static final int CARGO_SENSOR_PORT = 8;
+  public static final int CARGO_SENSOR_PORT = 6;
   public static final int HATCH_INTAKE_ENCODER_PORT = 1;
 
   // solenoid ports
-  public static final int HATCH_GRAB_SOLENOID = 1;
-  public static final int CARGO_SOLENOID = 2;
-  public static final int EXTENSION_SOLENOID = 3;
+  public static final int HATCH_GRAB_SOLENOID = 0;
+  public static final int CARGO_SOLENOID = 1;
+  public static final int EXTENSION_SOLENOID = 2;
 
   // misc. constants
   public static final double DT = 0.02;
-  public static final double S_V_MAX = 16;
-  public static final double A_V_MAX = 8;
+  public static final double S_V_MAX = 13;
+  public static final double A_V_MAX = 4;
   public static final double SENSOR_THRESHOLD = 2.5; //check this value
-  public static final double WRIST_ENCODER_GEAR = 60. / 84;
-  public static final double WRIST_OFFSET = 0.1;
-  public static final double GRAVITY_CONSTANT = 0.14;
+  public static final double WRIST_ENCODER_GEAR = 18. / 28;
+  public static final double WRIST_OFFSET = 2* Math.PI;
+  public static final double GRAVITY_CONSTANT = 0.07;
   
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.

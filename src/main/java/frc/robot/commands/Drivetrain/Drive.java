@@ -12,17 +12,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
-import lib.frc1747.controller.Logitech;
+import frc.robot.subsystems.Elevator;
+import lib.frc1747.controller.Xbox;
+import lib.frc1747.controller.Xbox;
 
 public class Drive extends Command {
   Drivetrain drivetrain;
-  Logitech driver;
-  public Drive() {
+  Xbox driver;
+  Elevator elevator;
+  public Drive(){
+    elevator = Elevator.getInstance();
     driver = OI.getInstance().getDriver();
     drivetrain = Drivetrain.getInstance();
     requires(drivetrain);
-    
-
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -35,11 +37,19 @@ public class Drive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-   drivetrain.setLeftPower(-driver.getAxis(Logitech.LEFT_VERTICAL) + driver.getAxis(Logitech.RIGHT_HORIZONTAL));
-   drivetrain.setRightPower(-driver.getAxis(Logitech.LEFT_VERTICAL) - driver.getAxis(Logitech.RIGHT_HORIZONTAL));
-   SmartDashboard.putNumber("Left Power", -driver.getAxis(Logitech.LEFT_VERTICAL) + driver.getAxis(Logitech.RIGHT_HORIZONTAL));
-   SmartDashboard.putNumber("Right Power", -driver.getAxis(Logitech.LEFT_VERTICAL) - driver.getAxis(Logitech.RIGHT_HORIZONTAL));
-  //  if(drivetrain.getLeftSpeed() < 5){
+   if(elevator.getDistance() > 25){
+    drivetrain.setLeftPower((Math.pow(driver.getAxis(Xbox.LEFT_VERTICAL), 3) + Math.pow(driver.getAxis(Xbox.RIGHT_HORIZONTAL) ,3))/5);
+    drivetrain.setRightPower((Math.pow(driver.getAxis(Xbox.LEFT_VERTICAL), 3) - Math.pow(driver.getAxis(Xbox.RIGHT_HORIZONTAL), 3))/5);
+   }else{
+    drivetrain.setLeftPower(Math.pow(driver.getAxis(Xbox.LEFT_VERTICAL), 3) + Math.pow(driver.getAxis(Xbox.RIGHT_HORIZONTAL) ,3));
+    drivetrain.setRightPower(Math.pow(driver.getAxis(Xbox.LEFT_VERTICAL), 3) - Math.pow(driver.getAxis(Xbox.RIGHT_HORIZONTAL), 3));
+   }
+   SmartDashboard.putNumber("Left Power", driver.getAxis(Xbox.LEFT_VERTICAL) - driver.getAxis(Xbox.RIGHT_HORIZONTAL));
+   SmartDashboard.putNumber("Right Power", driver.getAxis(Xbox.LEFT_VERTICAL) + driver.getAxis(Xbox.RIGHT_HORIZONTAL));
+   SmartDashboard.putNumber("Left Position", drivetrain.getLeftDistance());
+   SmartDashboard.putNumber("Right Position", drivetrain.getRightDistance());
+
+   //  if(drivetrain.getLeftSpeed() < 5){
   //     drivetrain.setLeftPower(0.3);
   //     drivetrain.setRightPower(0.3);
   //  }

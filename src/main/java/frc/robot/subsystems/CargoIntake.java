@@ -26,6 +26,7 @@ public class CargoIntake extends Subsystem {
 
   public CargoIntake() {
     motor = new TalonSRX(RobotMap.CARGO_INTAKE_MOTOR_PORT);
+    motor.setInverted(true);
     solenoid = new Solenoid(RobotMap.CARGO_SOLENOID);
   }
 

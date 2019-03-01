@@ -14,11 +14,13 @@ public class AutonExtend extends Command {
   Extension extender;
   long duration;
   long startTime;
+  Boolean state;
 
-  public AutonExtend(long duration) {
+  public AutonExtend(long duration, Boolean state) {
     extender = Extension.getInstance();
     requires(extender);
     this.duration = duration;
+    this.state = state;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -32,7 +34,7 @@ public class AutonExtend extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    extender.setExtended(true);
+    extender.setExtended(state);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,7 +46,6 @@ public class AutonExtend extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    extender.setExtended(false);
   }
 
   // Called when another command which requires one or more of the same

@@ -8,9 +8,15 @@
 package frc.robot.commands.CargoIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
+import frc.robot.subsystems.CargoIntake;
+import lib.frc1747.controller.Xbox;
 
 public class Extend extends Command {
+  CargoIntake cargoIntake;
   public Extend() {
+    cargoIntake = CargoIntake.getInstance();
+    requires(cargoIntake);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -23,22 +29,25 @@ public class Extend extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    cargoIntake.setExtended(true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return !OI.getInstance().getOperator().getButton(Xbox.A).get();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    cargoIntake.setExtended(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

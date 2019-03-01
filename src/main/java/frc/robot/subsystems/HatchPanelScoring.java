@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -19,10 +20,14 @@ public class HatchPanelScoring extends Subsystem {
   // here. Call these from Commands.
 
   Solenoid solenoid;
+  DigitalInput sensor;
+
   static HatchPanelScoring hatch;
 
   public HatchPanelScoring(){
     solenoid = new Solenoid(RobotMap.HATCH_GRAB_SOLENOID);
+    // sensor = new DigitalInput(RobotMap.LEFT_IR_SENSOR_PORT);
+
   }
 
   @Override
@@ -38,10 +43,15 @@ public class HatchPanelScoring extends Subsystem {
   public Boolean getPosition() {
     return solenoid.get();
   }
+  
   public static HatchPanelScoring getInstance(){
     if(hatch == null){
       hatch = new HatchPanelScoring();
     }
     return hatch;
+  }
+  
+  public Boolean sensorActivated() {
+    return sensor.get();
   }
 }

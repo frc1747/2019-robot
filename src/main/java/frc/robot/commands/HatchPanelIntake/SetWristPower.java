@@ -5,12 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.HatchPanelIntake;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.HatchPanelIntake;
-import lib.frc1747.controller.Logitech;
+import lib.frc1747.controller.Xbox;
 
 public class SetWristPower extends Command {
   HatchPanelIntake HPIntake;
@@ -30,12 +31,13 @@ public class SetWristPower extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    SmartDashboard.putNumber("Wrist Position", HPIntake.getWristPosition());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return !OI.getInstance().getDriver().getDPad(Logitech.LEFT).get();
+    return !OI.getInstance().getDriver().getButton(Xbox.A).get();
   }
 
   // Called once after isFinished returns true
