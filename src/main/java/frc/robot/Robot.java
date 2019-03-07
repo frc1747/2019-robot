@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Auton.Autonomous;
+import frc.robot.commands.Auton.Stop;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.CargoScoring;
 import frc.robot.subsystems.Drivetrain;
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
   CargoScoring cargoScoring;
   HatchPanelIntake HPIntake;
   Command auton;
+  Command test;
   AutonChoice[] choices;
   AutonPosition[] positions;
   int pos;
@@ -89,10 +91,10 @@ public class Robot extends TimedRobot {
     GambeziDashboard.set_double("Drivetrain/Distance kV", 0.07); // 0.07
     GambeziDashboard.set_double("Drivetrain/Distance kA", 0.01); // 0.01
 
-    GambeziDashboard.set_double("Drivetrain/Angle P", 2); // 2
-    GambeziDashboard.set_double("Drivetrain/Angle D", 0);
-    GambeziDashboard.set_double("Drivetrain/Angle kV", 0.08); // 0.08
-    GambeziDashboard.set_double("Drivetrain/Angle kA", 0.01); // 0.01
+    GambeziDashboard.set_double("Drivetrain/Angle P", 1.5); // 2
+    GambeziDashboard.set_double("Drivetrain/Angle D", 0.012);
+    GambeziDashboard.set_double("Drivetrain/Angle kV", 0.11); // 0.08
+    GambeziDashboard.set_double("Drivetrain/Angle kA", 0.02); // 0.01
 
     GambeziDashboard.set_double("Drivetrain/teleop Distance P", -0.02);
     GambeziDashboard.set_double("Drivetrain/teleop Distance D", 0);
@@ -139,6 +141,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    GambeziDashboard.set_double("robot angle", drivetrain.getAngle());
+    GambeziDashboard.set_boolean("has ball", !cargoScoring.sensorActivated());
     GambeziDashboard.set_double("Drivetrain/Left Encoder", drivetrain.getLeftDistance());
     GambeziDashboard.set_double("Drivetrain/Right Encoder", drivetrain.getRightDistance());
     GambeziDashboard.set_double("Wrist/Position", HPIntake.getWristPosition());
@@ -206,17 +210,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
     //drivetrain.resetGyro();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
     Scheduler.getInstance().removeAll();
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-      drivetrain.getRightSide().resetEncoder();
-      drivetrain.getLeftSide().resetEncoder();
-    }
+    (test = new Stop()).start();
     elevator.setMode(Elevator.Follower.ELEVATOR, HBRSubsystem.Mode.PID);
     elevator.setSetpoint(Elevator.Follower.ELEVATOR, elevator.getDistance());
     elevator.tellSetpoint(elevator.getDistance());
@@ -227,7 +228,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putData(drivetrain);
+    // SmartDashboard.putData(drivetrain);
     SmartDashboard.putNumber("left feet", drivetrain.getLeftDistance());
     SmartDashboard.putNumber("right feet", drivetrain.getRightDistance());
     GambeziDashboard.set_double("left current", drivetrain.getLeftCurrent());
@@ -240,12 +241,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("angular velocity", drivetrain.getAngularVelocity());
     SmartDashboard.putNumber("Wrist Position", HPIntake.getWristPosition());
     SmartDashboard.putBoolean("Robot", jumper.get());
+    GambeziDashboard.set_boolean("has ball", !cargoScoring.sensorActivated());
+
 
     Scheduler.getInstance().run();
     SmartDashboard.putNumber("Wrist Voltage", HPIntake.getWristVolt());
     SmartDashboard.putBoolean("Has Ball", cargoScoring.sensorActivated());
-    GambeziDashboard.set_double("channel 4-7 current", dist.getCurrent(4)+dist.getCurrent(5)+dist.getCurrent(6)+dist.getCurrent(7) - 6.125);
-    GambeziDashboard.set_double("channel 8-11 current",  dist.getCurrent(8) + dist.getCurrent(9)+dist.getCurrent(10)+dist.getCurrent(11) - 7);
+    // GambeziDashboard.set_double("channel 4-7 current", dist.getCurrent(4)+dist.getCurrent(5)+dist.getCurrent(6)+dist.getCurrent(7) - 6.125 -2);
+    // GambeziDashboard.set_double("channel 8-11 current",  dist.getCurrent(8) + dist.getCurrent(9)+dist.getCurrent(10)+dist.getCurrent(11) - 7 - 4);
     // SmartDashboard.putNumber("channel 4", dist.getCurrent(4));
     // SmartDashboard.putNumber("channel 5", dist.getCurrent(4));
     // SmartDashboard.putNumber("channel 6", dist.getCurrent(4));
@@ -274,7 +277,7 @@ public class Robot extends TimedRobot {
   }
   
   public enum AutonChoice{
-    ROCKET, SHIP;
+    ROCKET, CENTER_SHIP;
   }
   public static DigitalInput getJumper(){
     if(jumper == null){

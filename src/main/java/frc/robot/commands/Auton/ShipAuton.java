@@ -17,11 +17,12 @@ public class ShipAuton extends CommandGroup {
    * Add your docs here.
    */
   public ShipAuton() {
+    // System.out.println("Center ship auton--------------------------");
     addSequential(new MakeSequential(
-      new  DriveProfiles("/home/lvuser/platform_to_side_cargo_1_fwd_nor.csv"),
+      new  DriveProfiles("/home/lvuser/platform_to_center_cargo_fwd_nor.csv"),
       new HPScore(),
-      new  DriveProfiles("/home/lvuser/side_cargo_1_to_center_rev_nor.csv"),
-      new  DriveProfiles("/home/lvuser/center_to_pickup_2_fwd_nor.csv")
+      new  DriveProfiles("/home/lvuser/center_cargo_to_center_rev_nor.csv"),
+      new  DriveProfiles("/home/lvuser/center_to_cargos_fwd_nor.csv")
     ));
     // Add Commands here:
     // e.g. addSequential(new Command1());

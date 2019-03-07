@@ -21,9 +21,9 @@ public class HPScore extends CommandGroup {
     addSequential(new MakeSequential(
       new AutonExtend(250, true),
       new MakeParallel(
-        new ActuateHPScoring(500, true),
+        new ActuateHPScoring(750, true),
         new MakeSequential(
-          new Delay(250),
+          new Delay(500),
           new AutonExtend(250, false)
         )
       ),

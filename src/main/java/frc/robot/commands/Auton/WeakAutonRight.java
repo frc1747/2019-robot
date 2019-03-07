@@ -9,6 +9,7 @@ package frc.robot.commands.Auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.Drivetrain.DriveProfiles;
+import frc.robot.commands.Elevator.ElevatorProfiles;
 import frc.robot.commands.HatchPanelScoring.HPScore;
 import lib.frc1747.commands.MakeSequential;
 
@@ -19,7 +20,9 @@ public class WeakAutonRight extends CommandGroup {
   public WeakAutonRight() {
     addSequential(new MakeSequential(
       new  DriveProfiles("/home/lvuser/platform_to_rocket_far_fwd_mir.csv"),
-      new HPScore(),
+      new  ElevatorProfiles(2),
+      new  HPScore(),
+      new  ElevatorProfiles(1),
       new  DriveProfiles("/home/lvuser/rocket_far_to_center_rev_mir.csv"),
       new  DriveProfiles("/home/lvuser/center_to_pickup_fwd_mir.csv")
     ));

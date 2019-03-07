@@ -41,20 +41,20 @@ public class ElevatorProfiles extends Command {
   @Override
   protected void initialize() { 
     if(stage == 1){
-      if(!CargoScoring.getInstance().sensorActivated()){
+      if(CargoScoring.getInstance().sensorActivated()){
         this.position = Elevator.ElevatorPositions.C1;
       }else{
         this.position = Elevator.ElevatorPositions.HP1;
       }
     } else if(stage == 2){
-      if(!CargoScoring.getInstance(
+      if(CargoScoring.getInstance(
       ).sensorActivated()){
         this.position = Elevator.ElevatorPositions.C2;
       }else{
         this.position = Elevator.ElevatorPositions.HP2;
       }
     } else if(stage == 3){
-      if(!CargoScoring.getInstance().sensorActivated()){
+      if(CargoScoring.getInstance().sensorActivated()){
         this.position = Elevator.ElevatorPositions.C3;
       }else{
         this.position = Elevator.ElevatorPositions.HP3;

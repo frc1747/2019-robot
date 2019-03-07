@@ -7,7 +7,11 @@
 
 package frc.robot;
 
+import frc.robot.commands.Auton.Stop;
+import frc.robot.commands.CargoIntake.AutonExtend;
+import frc.robot.commands.CargoIntake.AutonIntake;
 import frc.robot.commands.CargoIntake.Intake;
+import frc.robot.commands.CargoScoring.AutonOutake;
 import frc.robot.commands.CargoScoring.Outtake;
 import frc.robot.commands.Drivetrain.DriveProfiles;
 import frc.robot.commands.Elevator.ElevatorProfiles;
@@ -49,21 +53,25 @@ public class OI {
   }
   public void driver() {
     driver.getButton(Xbox.A).whenPressed(new HPScore());
+    driver.getButton(Xbox.BACK).whenPressed(new Stop());
+    driver.getButton(Xbox.START).whenPressed(new Stop());
+
+
     // driver.getButton(Xbox.A).whenPressed(new SetWristPower());
 
     driver.getButton(Xbox.X).whenPressed(new ElevatorProfiles(Elevator.ElevatorPositions.HP1));
     // driver.getButton(Xbox.X).whenPressed(new LiftElevator());
-    // driver.getButton(Xbox.Y).whenPressed(new WeakAuton());
-    // driver.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/center_to_pickup_2_fwd_nor.csv"));
-    // driver.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/staight_fwd_nor.csv"));
+        
+    // driver.getButton(Xbox.X).whenPressed(new DriveProfiles("/home/lvuser/s-curve_fwd_nor.csv"));
 
-
-
-    driver.getRTButton().whenPressed(new Intake(0.7, 0.7, true));
+    driver.getRTButton().whenPressed(new Intake(0.85, 0.7, true));
     driver.getRTButton().whenReleased(new Intake(0, 0, false));
 
     // driver.getRTButton().whenPressed(new Outtake(1));
     driver.getButton(Xbox.RB).whenPressed(new Outtake(-1));
+    driver.getButton(Xbox.RB).whenReleased(new AutonOutake(500, 0.7));
+
+
     driver.getLTButton().whenPressed(new GroundIntake2());//
     driver.getButton(Xbox.LB).whenPressed(new Beak());
 

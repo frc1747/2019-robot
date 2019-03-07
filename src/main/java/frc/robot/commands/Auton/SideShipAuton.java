@@ -5,24 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Elevator;
+package frc.robot.commands.Auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.HatchPanelIntake.WristProfile;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.HatchPanelIntake;
+import frc.robot.commands.Drivetrain.DriveProfiles;
+import frc.robot.commands.HatchPanelScoring.HPScore;
 import lib.frc1747.commands.MakeSequential;
 
-public class HatchFinal extends CommandGroup {
+public class SideShipAuton extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public HatchFinal() {
+  public SideShipAuton() {
     addSequential(new MakeSequential(
-      new ElevatorProfiles(Elevator.ElevatorPositions.C1),
-      new WristProfile(HatchPanelIntake.Positions.STOWED),
-      new ElevatorProfiles(Elevator.ElevatorPositions.HP1)
-    ));
+      new  DriveProfiles("/home/lvuser/platform_to_side_cargo_1_fwd_nor.csv"),
+      new HPScore()));
+      // new  DriveProfiles("/home/lvuser/center_cargo_to_center_rev_nor.csv")
+      // new  DriveProfiles("/home/lvuser/center_to_cargos_fwd_nor.csv")
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

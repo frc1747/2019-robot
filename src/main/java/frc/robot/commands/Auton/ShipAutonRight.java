@@ -17,16 +17,12 @@ public class ShipAutonRight extends CommandGroup {
    * Add your docs here.
    */
   public ShipAutonRight() {
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
 
       addSequential(new MakeSequential(
-        new  DriveProfiles("/home/lvuser/platform_to_side_cargo_1_fwd_mir.csv"),
+        new  DriveProfiles("/home/lvuser/platform_to_center_cargo_fwd_mir.csv"),
         new HPScore(),
-        new  DriveProfiles("/home/lvuser/side_cargo_1_to_center_rev_mir.csv"),
-        new  DriveProfiles("/home/lvuser/center_to_pickup_2_fwd_mir.csv")
+        new  DriveProfiles("/home/lvuser/center_cargo_to_center_rev_mir.csv"),
+        new  DriveProfiles("/home/lvuser/center_to_cargos_fwd_mir.csv")
       ));
     // To run multiple commands at the same time,
     // use addParallel()

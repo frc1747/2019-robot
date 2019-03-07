@@ -58,8 +58,8 @@ public class RocketAuton extends CommandGroup {
         new ElevatorProfiles(1)
     ),
     new MakeParallel(
-      new DriveProfiles("/home/lvuser/mid_to_cargo_fwd_nor.csv"),
-      new AutonIntake()
+      new DriveProfiles("/home/lvuser/mid_to_cargo_fwd_nor.csv")
+      // new AutonIntake()
     ),
     new DriveProfiles("/home/lvuser/cargo_to_mid_far_fwd_nor.csv"),
     new MakeParallel(

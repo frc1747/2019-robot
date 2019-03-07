@@ -27,8 +27,8 @@ public class RobotMap {
 
 
   // encoder scalings
-  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10;
-  public static final double RIGHT_ENCODER_SCALING = 1280.8;
+  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10 * 9.67 / 10;
+  public static final double RIGHT_ENCODER_SCALING = 1280.8 * 9.6 / 10 * 10.2 / 10;
   public static final double ELEVATOR_SCALING = 468.58/4;
 
   // motor ports

@@ -121,6 +121,7 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
 
   public void initDefaultCommand() {
     setDefaultCommand(new DriveWithJoysticks());
+    // setDefaultCommand(new Drive());
   }
 
   public void pidWrite(double[] power) {
@@ -205,7 +206,7 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
     public void setPower(double power) {
       victor.set(ControlMode.PercentOutput, power);
       victor2.set(ControlMode.PercentOutput, power);
-      // talon.set(ControlMode.PercentOutput, power);
+      talon.set(ControlMode.PercentOutput, power);
       talon2.set(ControlMode.PercentOutput, power);
     }
 

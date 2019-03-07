@@ -21,16 +21,22 @@ public class Autonomous extends CommandGroup {
       if(auton == Robot.AutonChoice.ROCKET){
         addSequential(new WeakAuton());
       }
-      if(auton == Robot.AutonChoice.SHIP){
+      if(auton == Robot.AutonChoice.CENTER_SHIP){
         addSequential(new ShipAuton());
       }
+      // if(auton == Robot.AutonChoice.SIDE_SHIP_1){
+      //   addSequential(new SideShipAuton());
+      // }
     }else if(pos == Robot.AutonPosition.RIGHT){
       if(auton == Robot.AutonChoice.ROCKET){
         addSequential(new WeakAutonRight());
       }
-      if(auton == Robot.AutonChoice.SHIP){
+      if(auton == Robot.AutonChoice.CENTER_SHIP){
         addSequential(new ShipAutonRight());
       }
+      // if(auton == Robot.AutonChoice.SIDE_SHIP_1){
+      //   addSequential(new SideShipRightAuton());
+      // }
     }
     // Add Commands here:
     // e.g. addSequential(new Command1());
