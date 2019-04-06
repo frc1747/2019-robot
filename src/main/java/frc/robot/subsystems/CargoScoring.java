@@ -41,7 +41,7 @@ public class CargoScoring extends Subsystem {
   }
 
   public Boolean sensorActivated() {
-    return sensor.get();
+    return !sensor.get();
   }
 
   public static CargoScoring getInstance(){

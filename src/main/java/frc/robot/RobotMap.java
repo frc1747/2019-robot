@@ -27,9 +27,16 @@ public class RobotMap {
 
 
   // encoder scalings
-  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10 * 9.67 / 10;
-  public static final double RIGHT_ENCODER_SCALING = 1280.8 * 9.6 / 10 * 10.2 / 10;
+  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10 * 9.67 / 10 * 10.46/10;
+  public static final double RIGHT_ENCODER_SCALING = 1280.8 * 9.6 / 10 * 10.2 / 10 * 10.34/10;
+
+  public static final double LIFT_ENCODER_SCALING = 1;
+
+  // public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10 * 9.67 / 10;
+  // public static final double RIGHT_ENCODER_SCALING = 1280.8 * 9.6 / 10 * 10.2 / 10;
+
   public static final double ELEVATOR_SCALING = 468.58/4;
+  // public static final double ELEVATOR_SCALING = 468.58/4;
 
   // motor ports
   public static final int[] DRIVE_LEFT_MOTOR_PORTS = {1, 2, 3, 4};
@@ -38,6 +45,8 @@ public class RobotMap {
   public static final int LEFT_ELEVATOR_PORT = 21;
   public static final int RIGHT_ELEVATOR_PORT = 22;
 
+  public static final int LIFT_MOTOR_PORT = 51;
+  
   // public static final int LEFT_INTAKE_PORT = 34;  //TO BE DEPRECATED
   // public static final int RIGHT_INTAKE_PORT = 35; //TO BE DEPRECATED
 
@@ -50,16 +59,20 @@ public class RobotMap {
 
   public static final int DRIVER_PORT = 0;
   public static final int OPERATOR_PORT = 1;
+  public static final int PROGRAMMER_PORT = 2;
   
   // rio ports
   public static final int ELEVATOR_ENCODER_PORT = 4;
   public static final int ELEVATOR_ENCODER_PORT_2 = 5;
+  public static final int LIFT_ENCODER_PORT_1 = 8;
+  public static final int LIFT_ENCODER_PORT_2 = 9;
 
   public static final int INTAKE_SENSOR_PORT = 2; //TO BE DEPRECATED
   // public static final int LEFT_IR_SENSOR_PORT = 6;
   // public static final int RIGHT_IR_SENSOR_PORT = 7;
   
   public static final int CARGO_SENSOR_PORT = 6;
+  public static final int PRESSURE_SENSOR_PORT = 2;
   public static final int HATCH_INTAKE_ENCODER_PORT = 1;
 
   // solenoid ports
@@ -75,6 +88,8 @@ public class RobotMap {
   public static final double WRIST_ENCODER_GEAR = 18. / 28;
   public static final double WRIST_OFFSET = 2* Math.PI;
   public static final double GRAVITY_CONSTANT = 0.07;
+  public static final double CAMERA_HEIGHT = 35;
+  public static final double VISION_TARGET_HEIGHT = 36.5;
   
   // For example to map the left and right motors, you could define the
   // following variables to use with your drivetrain subsystem.

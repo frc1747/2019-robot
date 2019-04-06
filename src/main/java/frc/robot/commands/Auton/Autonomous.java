@@ -13,46 +13,34 @@ import frc.robot.Robot.AutonChoice;
 import frc.robot.Robot.AutonPosition;
 
 public class Autonomous extends CommandGroup {
-  /**
-   * Add your docs here.
-   */
+  
   public Autonomous(AutonChoice auton, AutonPosition pos) {
     if(pos == Robot.AutonPosition.LEFT){
-      if(auton == Robot.AutonChoice.ROCKET){
-        addSequential(new WeakAuton());
+      if(auton == Robot.AutonChoice.JOSEPH_BELL_ROCKET){
+        addSequential(new JosephBellAuton());
       }
       if(auton == Robot.AutonChoice.CENTER_SHIP){
         addSequential(new ShipAuton());
       }
-      // if(auton == Robot.AutonChoice.SIDE_SHIP_1){
-      //   addSequential(new SideShipAuton());
-      // }
+      if (auton == Robot.AutonChoice.ROCKET_CARGO_COMBO){
+        addSequential(new CloseRocketAndCargoShip());
+      }
+      if (auton == Robot.AutonChoice.SIDE_CARGO_SHIP){
+        addSequential(new SideShipAuton());
+      } 
     }else if(pos == Robot.AutonPosition.RIGHT){
-      if(auton == Robot.AutonChoice.ROCKET){
-        addSequential(new WeakAutonRight());
+      if(auton == Robot.AutonChoice.JOSEPH_BELL_ROCKET){
+        addSequential(new JosephBellAutonRight());
       }
       if(auton == Robot.AutonChoice.CENTER_SHIP){
         addSequential(new ShipAutonRight());
       }
-      // if(auton == Robot.AutonChoice.SIDE_SHIP_1){
-      //   addSequential(new SideShipRightAuton());
-      // }
+      if (auton == Robot.AutonChoice.ROCKET_CARGO_COMBO){
+        addSequential(new CloseRocketAndCargoShipRight());
+      }
+      if (auton == Robot.AutonChoice.SIDE_CARGO_SHIP){
+        addSequential(new SideShipAutonRight());
+      }
     }
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
-
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
-
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
   }
 }

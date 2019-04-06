@@ -36,7 +36,7 @@ public class Outtake extends Command {
   protected void initialize() {
     if(Elevator.getInstance().getSetPoint() == 34){
       extend.setExtended(false);
-      intake.setPower(-0.5);
+      intake.setPower(-0.75);
     }else{
       extend.setExtended(true);
       intake.setPower(power);

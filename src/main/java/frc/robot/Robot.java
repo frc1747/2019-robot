@@ -10,6 +10,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -24,6 +25,7 @@ import frc.robot.commands.Auton.Autonomous;
 import frc.robot.commands.Auton.Stop;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.CargoScoring;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchPanelIntake;
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
   CargoIntake cargoIntake;
   CargoScoring cargoScoring;
   HatchPanelIntake HPIntake;
+  Climber climb;
   Command auton;
   Command test;
   AutonChoice[] choices;
@@ -78,6 +81,7 @@ public class Robot extends TimedRobot {
     HPIntake = HatchPanelIntake.getInstance();
     cargoScoring = CargoScoring.getInstance();
     hpintake = HatchPanelIntake.getInstance();
+    climb = Climber.getInstance();
     lastAState = false;
     lastBState = false;
     
@@ -91,8 +95,8 @@ public class Robot extends TimedRobot {
     GambeziDashboard.set_double("Drivetrain/Distance kV", 0.07); // 0.07
     GambeziDashboard.set_double("Drivetrain/Distance kA", 0.01); // 0.01
 
-    GambeziDashboard.set_double("Drivetrain/Angle P", 1.5); // 2
-    GambeziDashboard.set_double("Drivetrain/Angle D", 0.012);
+    GambeziDashboard.set_double("Drivetrain/Angle P", 1.25); // 2
+    GambeziDashboard.set_double("Drivetrain/Angle D", 0.15);
     GambeziDashboard.set_double("Drivetrain/Angle kV", 0.11); // 0.08
     GambeziDashboard.set_double("Drivetrain/Angle kA", 0.02); // 0.01
 
@@ -106,6 +110,7 @@ public class Robot extends TimedRobot {
     GambeziDashboard.set_double("Drivetrain/teleop Angle kV", 1./(RobotMap.A_V_MAX * 3));
     GambeziDashboard.set_double("Drivetrain/teleop Angle kA", 0);
 
+    
 
     GambeziDashboard.set_string("Auton", "Rocket");
 
@@ -141,13 +146,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    GambeziDashboard.set_double("robot angle", drivetrain.getAngle());
-    GambeziDashboard.set_boolean("has ball", !cargoScoring.sensorActivated());
+    GambeziDashboard.set_double("Robot/robot angle", drivetrain.getAngle());
+
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
+
+    GambeziDashboard.set_boolean("CargoScoring/has ball", !cargoScoring.sensorActivated());
     GambeziDashboard.set_double("Drivetrain/Left Encoder", drivetrain.getLeftDistance());
     GambeziDashboard.set_double("Drivetrain/Right Encoder", drivetrain.getRightDistance());
     GambeziDashboard.set_double("Wrist/Position", HPIntake.getWristPosition());
     SmartDashboard.putNumber("Wrist Gravity Force", Math.cos(HPIntake.getWristPosition())*RobotMap.GRAVITY_CONSTANT);
-    GambeziDashboard.set_double("Elevator/Encoder", elevator.getDistance());
+    GambeziDashboard.set_double("Elevator/Encoder", elevator.getElevatorPosition());
     Scheduler.getInstance().run();
     if(OI.getInstance().getDriver().getButton(Xbox.A).get() == true && lastAState == false){
       pos++;
@@ -161,9 +170,10 @@ public class Robot extends TimedRobot {
     }else if(lastBState == true && !OI.getInstance().getDriver().getButton(Xbox.B).get()){
       lastBState = false;
     }
-    GambeziDashboard.set_string("Auton Choice", choices[choice%2].toString());
+    GambeziDashboard.set_string("Auton Choice", choices[choice%4].toString());
     GambeziDashboard.set_string("Auton Position", positions[pos%3].toString());
     GambeziDashboard.set_boolean("Robot", jumper.get());
+    GambeziDashboard.set_double("Elevator/elev height", elevator.getDistance());
 
   }
 
@@ -228,27 +238,44 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    GambeziDashboard.set_double("limelight/contour 0 area", NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta0").getDouble(0));
+    GambeziDashboard.set_double("limelight/contour 1 area", NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta1").getDouble(1));
+    // double tx0 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx0").getDouble(0);
+    // double tx1 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx1").getDouble(1);
+    // double ta0 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta0").getDouble(0);
+    // double ta1 = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta1").getDouble(1);
+    // GambeziDashboard.set_double("angle to turn", -(2.05 - (ta0 / ta1)) * 0.02 * RobotMap.A_V_MAX);
+    // GambeziDashboard.set_double("ratio of ta0 to ta1", ta0 / ta1);
+    // GambeziDashboard.set_double("tx 0 area", tx0);
+    // GambeziDashboard.set_double("tx 1 area", tx1);
+    // GambeziDashboard.set_double("distance to target", 66.0402824578 * Math.exp(-.2492202696 * ta0));
+    // if(tx0 > tx1){
+    //   GambeziDashboard.set_string("bigger side", "right");
+    // }
+    // else {
+    //   GambeziDashboard.set_string("bigger side", "left");
+    // }
     // SmartDashboard.putData(drivetrain);
     SmartDashboard.putNumber("left feet", drivetrain.getLeftDistance());
     SmartDashboard.putNumber("right feet", drivetrain.getRightDistance());
-    GambeziDashboard.set_double("left current", drivetrain.getLeftCurrent());
-    GambeziDashboard.set_double("right current", drivetrain.getRightCurrent());
-    GambeziDashboard.set_double("left speed", drivetrain.getLeftSpeed());
-    GambeziDashboard.set_double("right speed", drivetrain.getRightSpeed());
-    GambeziDashboard.set_double("robot angle", drivetrain.getAngle());
+    GambeziDashboard.set_double("Drivetrain/left current", drivetrain.getLeftCurrent());
+    GambeziDashboard.set_double("Drivetrain/right current", drivetrain.getRightCurrent());
+    GambeziDashboard.set_double("Drivetrain/left speed", drivetrain.getLeftSpeed());
+    GambeziDashboard.set_double("Drivetrain/right speed", drivetrain.getRightSpeed());
+    GambeziDashboard.set_double("Robot/robot angle", drivetrain.getAngle());
     SmartDashboard.putNumber("Elevator Distance", elevator.getDistance());
     SmartDashboard.putNumber("robot angle", drivetrain.getAngle());
     SmartDashboard.putNumber("angular velocity", drivetrain.getAngularVelocity());
     SmartDashboard.putNumber("Wrist Position", HPIntake.getWristPosition());
     SmartDashboard.putBoolean("Robot", jumper.get());
-    GambeziDashboard.set_boolean("has ball", !cargoScoring.sensorActivated());
+    GambeziDashboard.set_boolean("CargoScoring/has ball", !cargoScoring.sensorActivated());
 
 
     Scheduler.getInstance().run();
-    SmartDashboard.putNumber("Wrist Voltage", HPIntake.getWristVolt());
-    SmartDashboard.putBoolean("Has Ball", cargoScoring.sensorActivated());
-    // GambeziDashboard.set_double("channel 4-7 current", dist.getCurrent(4)+dist.getCurrent(5)+dist.getCurrent(6)+dist.getCurrent(7) - 6.125 -2);
-    // GambeziDashboard.set_double("channel 8-11 current",  dist.getCurrent(8) + dist.getCurrent(9)+dist.getCurrent(10)+dist.getCurrent(11) - 7 - 4);
+    SmartDashboard.putNumber("Wrist/Wrist Voltage", HPIntake.getWristVolt());
+    SmartDashboard.putBoolean("CargoScoring/Has Ball", cargoScoring.sensorActivated());
+    GambeziDashboard.set_double("channel 4-7 current", dist.getCurrent(4)+dist.getCurrent(5)+dist.getCurrent(6)+dist.getCurrent(7));
+    GambeziDashboard.set_double("channel 8-11 current",  dist.getCurrent(8) + dist.getCurrent(9)+dist.getCurrent(10)+dist.getCurrent(11));
     // SmartDashboard.putNumber("channel 4", dist.getCurrent(4));
     // SmartDashboard.putNumber("channel 5", dist.getCurrent(4));
     // SmartDashboard.putNumber("channel 6", dist.getCurrent(4));
@@ -277,7 +304,7 @@ public class Robot extends TimedRobot {
   }
   
   public enum AutonChoice{
-    ROCKET, CENTER_SHIP;
+    JOSEPH_BELL_ROCKET, CENTER_SHIP, ROCKET_CARGO_COMBO, SIDE_CARGO_SHIP;
   }
   public static DigitalInput getJumper(){
     if(jumper == null){

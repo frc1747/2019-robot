@@ -10,7 +10,9 @@ package frc.robot.commands.Auton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.Drivetrain.DriveProfiles;
 import frc.robot.commands.Elevator.ElevatorProfiles;
+import frc.robot.commands.HatchPanelScoring.ActuateHPScoring;
 import frc.robot.commands.HatchPanelScoring.HPScore;
+import lib.frc1747.commands.MakeParallel;
 import lib.frc1747.commands.MakeSequential;
 
 public class WeakAutonRight extends CommandGroup {
@@ -20,11 +22,25 @@ public class WeakAutonRight extends CommandGroup {
   public WeakAutonRight() {
     addSequential(new MakeSequential(
       new  DriveProfiles("/home/lvuser/platform_to_rocket_far_fwd_mir.csv"),
-      new  ElevatorProfiles(2),
+      new AutonTarget(1500),
+      //new  ElevatorProfiles(1),
       new  HPScore(),
-      new  ElevatorProfiles(1),
-      new  DriveProfiles("/home/lvuser/rocket_far_to_center_rev_mir.csv"),
-      new  DriveProfiles("/home/lvuser/center_to_pickup_fwd_mir.csv")
+      //new  ElevatorProfiles(1),
+      new  DriveProfiles("/home/lvuser/test2_rev_mir.csv"),
+      // new MakeParallel(
+        // new  ActuateHPScoring(4000, true),
+        // new  DriveProfiles("/home/lvuser/center_to_pickup_fwd_mir.csv"),
+        new MakeParallel(
+          new AutonTarget(1750),
+          new ActuateHPScoring(751, true)
+        ),
+        new ActuateHPScoring(150, false),
+        new DriveProfiles("/home/lvuser/test_rev_mir.csv"),
+        // new DriveProfiles("/home/lvuser/mid_to_rocket_close_fwd_mir.csv"),
+        new AutonTarget(1750),
+        //new  ElevatorProfiles(1),
+        new  HPScore()
+        //new  ElevatorProfiles(1)
     ));
     // Add Commands here:
     // e.g. addSequential(new Command1());

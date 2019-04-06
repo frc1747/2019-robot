@@ -7,6 +7,9 @@
 
 package frc.robot.commands.Elevator;
 
+import com.tigerhuang.gambezi.Gambezi;
+import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -30,7 +33,7 @@ public class LiftElevator extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SmartDashboard.putNumber("Elevator Position", elevator.getDistance());
+    GambeziDashboard.set_double("Elevator/Elevator Position", elevator.getDistance());
   }
 
   // Make this return true when this Command no longer needs to run execute()

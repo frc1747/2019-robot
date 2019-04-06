@@ -71,16 +71,34 @@ public class DriveWithJoysticks extends Command {
       // else if (!shouldstop) {
       // drivetrain.setSetpoint(DriveSub.Follower.ANGLE, drivetrain.getAngle() + OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * Math.PI);
       // }
+
+      // if (OI.getInstance().getDriver().getLTButton().get()){
+      //   drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX / 5);
+      //   drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX / 5);
+      // } else {
+
+      //   drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX * (77.5 - (Elevator.getInstance().getDistance() / 2) / 77.5));
+      //   drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX * (77.5 - (Elevator.getInstance().getDistance() / 2)) / 77.5);
+      // }
+
       leftVert = OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) ;
       rightHoriz = -OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) ;
-    if(Elevator.getInstance().getDistance() > 25){
+    if(Elevator.getInstance().getDistance() > 30){
+
+                                           // ^^ was previously 25
+
       drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) * RobotMap.S_V_MAX/5);
       drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, -OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * RobotMap.A_V_MAX/5);
       // drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, (OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) * RobotMap.S_V_MAX)/(Elevator.getInstance().getElevatorPosition()/(83.5/5)));
       // drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, (-OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * RobotMap.A_V_MAX)/(Elevator.getInstance().getElevatorPosition()/(83.5/5)));  
     }else{
-      drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX);
-      drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX);
+      if (OI.getInstance().getDriver().getLTButton().get()){
+        drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX / 5);
+        drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX / 5);
+      } else {
+        drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX);
+        drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX);
+      }
     }
   }
 
@@ -93,7 +111,6 @@ public class DriveWithJoysticks extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    System.out.println("Ending");
     drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, 0);
     drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, drivetrain.getAngle());
     drivetrain.setEnabled(false);

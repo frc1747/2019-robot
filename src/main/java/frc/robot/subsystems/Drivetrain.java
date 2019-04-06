@@ -126,8 +126,8 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
 
   public void pidWrite(double[] power) {
     arcadeDrive(power[0], -power[1]);
-    GambeziDashboard.set_double("Power 0", power[0]);
-    GambeziDashboard.set_double("Power 1", power[1]);
+    GambeziDashboard.set_double("Drivetrain/Power 0", power[0]);
+    GambeziDashboard.set_double("Drivetrain/Power 1", power[1]);
 
     // SmartDashboard.putNumber("distance setpoint", power[0]);
     // SmartDashboard.putNumber("angle setpoint", power[1]);
@@ -151,17 +151,17 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
     SmartDashboard.putNumber("Actual Linear Velocity", vars[1]);
     SmartDashboard.putNumber("Angular Velocity Setpoint", vars[2]);
     SmartDashboard.putNumber("Actual Angular Velocity", vars[3]);
-    GambeziDashboard.set_double("Linear Velocity Setpoint", vars[0]);
-    GambeziDashboard.set_double("Actual Linear Velocity", vars[1]);
-    GambeziDashboard.set_double("Angular Velocity Setpoint", vars[2]);
-    GambeziDashboard.set_double("Actual Angular Velocity", vars[3]);
+    GambeziDashboard.set_double("Drivetrain/Linear Velocity Setpoint", vars[0]);
+    GambeziDashboard.set_double("Drivetrain/Actual Linear Velocity", vars[1]);
+    GambeziDashboard.set_double("Drivetrain/Angular Velocity Setpoint", vars[2]);
+    GambeziDashboard.set_double("Drivetrain/Actual Angular Velocity", vars[3]);
   }
 
   public void arcadeDrive(double leftVert, double rightHoriz) {
     setLeftPower(leftVert + rightHoriz);
     setRightPower(leftVert - rightHoriz);
-    GambeziDashboard.set_double("Left Drive Power", leftVert + rightHoriz);
-    GambeziDashboard.set_double("Right Drive Power", leftVert - rightHoriz);
+    GambeziDashboard.set_double("Drivetrain/Left Drive Power", leftVert + rightHoriz);
+    GambeziDashboard.set_double("Drivetrain/Right Drive Power", leftVert - rightHoriz);
 
     SmartDashboard.putNumber("left power", leftVert + rightHoriz);
     SmartDashboard.putNumber("right power", leftVert - rightHoriz);

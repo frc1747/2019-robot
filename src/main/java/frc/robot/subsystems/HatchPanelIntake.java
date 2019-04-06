@@ -31,7 +31,7 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   double wristOffset;
   double setPoint;
   DigitalInput jumper;
-  public static double[] positions = {0, Math.PI/2 + 0.5, Math.PI};
+  public static double[] positions = {1.33, Math.PI/2 + 0.5, Math.PI};
 
   public HatchPanelIntake(){
     jumper = Robot.getJumper();
@@ -80,22 +80,20 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
 		// } else {
 		// 	return RobotMap.WRIST_ENCODER_GEAR * (5 + -encoder.getVoltage()) * 2 * Math.PI/5 - wristOffset;
     // }
-    // if(jumper.get()){
-        if(encoder.getVoltage() < 0.5){
-          return ((encoder.getVoltage() + 1.43)-0.602)*Math.PI/1.149;
-        }else{
-          return ((encoder.getVoltage())-0.602)*Math.PI/1.149;
-        }
-    // if(jumper.get()){
-    //   if(encoder.getVoltage() < 1.2){
-    //     return ((encoder.getVoltage() + 5)-1.46)*Math.PI/4.05;
-    //   }else{
-    //     return (encoder.getVoltage()-1.46)*Math.PI/4.05;
-    //   }
-    // }else{
-    //   return encoder.getVoltage();      
-    // }
-   
+    if(jumper.get()){
+      // if(encoder.getVoltage() < 0.5){
+      //   return ((encoder.getVoltage() + 1.43)-0.602)*Math.PI/1.149;
+      // }else{
+      //   return ((encoder.getVoltage())-0.602)*Math.PI/1.149;
+      // }
+      if (encoder.getVoltage() * -1 < -2){
+        return (encoder.getVoltage() * -1 + 4.93 + 1.5) * Math.PI / 3.87;
+      } else {
+        return (encoder.getVoltage() * -1 + 1.5) * Math.PI / 3.87;
+      }
+    }
+    // return (encoder.getVoltage() - 0.95) * Math.PI/3.87;
+    return 1;
     // return encoder.getVoltage();
   }
 
@@ -110,11 +108,11 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   public void pidWrite(double[] power) {
     if (setPoint == positions[2] && Math.abs(getWristPosition() - setPoint) < Math.PI / 12) {
       wrist.set(ControlMode.PercentOutput, 0);
-      GambeziDashboard.set_double("Wrist Power", 0);
+      GambeziDashboard.set_double("Wrist/Wrist Power", 0);
     }
     else if (setPoint == positions[0] && Math.abs(getWristPosition() - setPoint) < Math.PI / 12) {
       wrist.set(ControlMode.PercentOutput, 0);
-      GambeziDashboard.set_double("Wrist Power", 0);
+      GambeziDashboard.set_double("Wrist/Wrist Power", 0);
     }
     // else if (setPoint == positions[1]) {
     //   wrist.set(ControlMode.PercentOutput, power[0] + -Math.sin(getWristPosition()) * 0.07);
@@ -144,7 +142,7 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   }
 
   public void internalVariablesWrite(double[] vars) {
-    GambeziDashboard.set_double("Wrist Setpoint", vars[0]);
-    GambeziDashboard.set_double("Wrist Supposed Setpoint", setPoint);
+    GambeziDashboard.set_double("Wrist/Setpoint", vars[0]);
+    GambeziDashboard.set_double("Wrist/Supposed Setpoint", setPoint);
   }
 }

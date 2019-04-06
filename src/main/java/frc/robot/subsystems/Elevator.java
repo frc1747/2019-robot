@@ -25,7 +25,7 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
   private TalonSRX rightmotor;
   private Encoder encoder;
   double setPoint;
-  public static double[] positions = {0, 16.5, 45-11, 47-19+3, 55.5-11, 75-19+4, 87.5-11};
+  public static double[] positions = {0, 16.5+1.5, 45-11, 47-19+3, 57.5-10, 75-19+4, 87.5-10};
   static Elevator elevator;
 
     public Elevator(){
@@ -69,9 +69,9 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
       if(getDistance() <= 5 && setPoint < 5){
         setPower(0);
       }else{
-        setPower(power[0] + 0.3);
-        GambeziDashboard.set_double("elev voltage", elevator.getVoltage());
-        GambeziDashboard.set_double("elev voltage", elevator.getCurrent());
+        setPower(power[0] + 0.225);
+        GambeziDashboard.set_double("Elevator/elev voltage", elevator.getVoltage());
+        GambeziDashboard.set_double("Elevator/elev voltage", elevator.getCurrent());
       }
       GambeziDashboard.set_double("Elevator/PIDWrite", power[0]);
     }

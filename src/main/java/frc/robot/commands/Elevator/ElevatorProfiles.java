@@ -10,9 +10,11 @@ package frc.robot.commands.Elevator;
 import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.CargoScoring;
 import frc.robot.subsystems.Elevator;
+import lib.frc1747.controller.Xbox;
 import lib.frc1747.motion_profile.Parameters;
 import lib.frc1747.subsytems.HBRSubsystem;
 
@@ -41,20 +43,19 @@ public class ElevatorProfiles extends Command {
   @Override
   protected void initialize() { 
     if(stage == 1){
-      if(CargoScoring.getInstance().sensorActivated()){
+      if(CargoScoring.getInstance().sensorActivated() || OI.getInstance().getOperator().getDPad(Xbox.DOWN).get()){
         this.position = Elevator.ElevatorPositions.C1;
       }else{
         this.position = Elevator.ElevatorPositions.HP1;
       }
     } else if(stage == 2){
-      if(CargoScoring.getInstance(
-      ).sensorActivated()){
+      if(CargoScoring.getInstance().sensorActivated() || OI.getInstance().getOperator().getDPad(Xbox.DOWN).get()){
         this.position = Elevator.ElevatorPositions.C2;
       }else{
         this.position = Elevator.ElevatorPositions.HP2;
       }
     } else if(stage == 3){
-      if(CargoScoring.getInstance().sensorActivated()){
+      if(CargoScoring.getInstance().sensorActivated() || OI.getInstance().getOperator().getDPad(Xbox.DOWN).get()){
         this.position = Elevator.ElevatorPositions.C3;
       }else{
         this.position = Elevator.ElevatorPositions.HP3;
@@ -77,7 +78,7 @@ public class ElevatorProfiles extends Command {
       elevator.setMode(Elevator.Follower.ELEVATOR, HBRSubsystem.Mode.FOLLOWER);
       elevator.setPIDMode(Elevator.Follower.ELEVATOR, HBRSubsystem.PIDMode.POSITION);
       elevator.setILimit(Elevator.Follower.ELEVATOR, 0);
-      elevator.setOutputLimit(Elevator.Follower.ELEVATOR, 0.7);
+      elevator.setOutputLimit(Elevator.Follower.ELEVATOR, 0.775);
       elevator.setFeedforward(Elevator.Follower.ELEVATOR, 0, GambeziDashboard.get_double("Elevator/kV"), GambeziDashboard.get_double("Elevator/kA"));
       elevator.setFeedback(Elevator.Follower.ELEVATOR, GambeziDashboard.get_double("Elevator/P"), GambeziDashboard.get_double("Elevator/I"), GambeziDashboard.get_double("Elevator/D"));
       elevator.resetIntegrator(Elevator.Follower.ELEVATOR);

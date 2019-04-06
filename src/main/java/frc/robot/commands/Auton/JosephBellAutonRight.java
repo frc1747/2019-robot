@@ -11,48 +11,31 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.Drivetrain.DriveProfiles;
 import frc.robot.commands.HatchPanelScoring.ActuateHPScoring;
 import frc.robot.commands.HatchPanelScoring.HPScore;
-import frc.robot.commands.Extension.AutonExtend;
 import lib.frc1747.commands.MakeParallel;
 import lib.frc1747.commands.MakeSequential;
 
-public class ShipAutonRight extends CommandGroup {
+public class JosephBellAutonRight extends CommandGroup {
 
-  public ShipAutonRight() {
+  public JosephBellAutonRight() {
     addSequential(new MakeSequential(
-      new DriveProfiles("/home/lvuser/platform_to_center_cargo_fwd_mir.csv"),
-      new MakeParallel(  
-        new AutonExtend(250, true),
-        new MakeSequential(
-          new Delay(100),
-          new ActuateHPScoring(250, true)
-        )
-      ),
-      new MakeSequential(
-        new Delay(125),
-        new AutonExtend(250, false)
-      ),
+      new  DriveProfiles("/home/lvuser/Joseph_Bell_test1_fwd_mir.csv"),
+      new AutonTarget(1500),
+      new  HPScore(),
 
-      new DriveProfiles("/home/lvuser/cargo_ship_to_feeder_station_rev_mir.csv"),
+      new  DriveProfiles("/home/lvuser/Joseph_Bell_test2_rev_mir.csv"),
+
       new MakeParallel(
         new AutonTarget(1750),
-        new ActuateHPScoring(750, true)
+        new ActuateHPScoring(751, true)
       ),
-
+        
       new ActuateHPScoring(150, false),
+      new DriveProfiles("/home/lvuser/Joseph_Bell_test3_rev_mir.csv"),
 
-      new DriveProfiles("/home/lvuser/test3_rev_mir.csv")
-      /*
-      new MakeParallel(  
-        new AutonExtend(250, true),
-        new MakeSequential(
-          new Delay(100),
-          new ActuateHPScoring(250, true)
-        )
-      ),
-      new MakeSequential(
-        new Delay(125),
-        new AutonExtend(250, false)
-      )*/
+      new AutonTarget(1500)
+      //new HPScore(),
+
+      //new DriveProfiles("/home/lvuser/Joseph_Bell_test4_rev_mir.csv")
     ));
   }
 }

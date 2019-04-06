@@ -37,7 +37,7 @@ public class Extend extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return !OI.getInstance().getDriver().getDPad(Xbox.UP).get();
+    return !OI.getInstance().getOperator().getDPad(Xbox.DOWN).get();
   }
 
   // Called once after isFinished returns true

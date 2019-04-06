@@ -22,13 +22,33 @@ public class WeakAuton extends CommandGroup {
   public WeakAuton() {
     addSequential(new MakeSequential(
       new  DriveProfiles("/home/lvuser/platform_to_rocket_far_fwd_nor.csv"),
-      new  ElevatorProfiles(2),
+      new AutonTarget(1500),
+      //new  ElevatorProfiles(1),
       new  HPScore(),
-      new  ElevatorProfiles(1),
-      new  DriveProfiles("/home/lvuser/rocket_far_to_center_rev_nor.csv"),
+      //new  ElevatorProfiles(1),new MakeParallel(
+                                                              //  new MakeParallel(
+                                                              //    new MakeSequential(
+                                                              //      new Delay(2000),
+                      //pseudo-code                           //      new findTarget()
+                                                              //    ),
+                                                              //     new DriveProfiles("/home/lvuser/test2_rev_nor.csv")
+                                                              //   ),
+                                                              // )
+      new  DriveProfiles("/home/lvuser/test2_V2_rev_nor.csv"),
       // new MakeParallel(
         // new  ActuateHPScoring(4000, true),
-        new  DriveProfiles("/home/lvuser/center_to_pickup_fwd_nor.csv")
+        // new  DriveProfiles("/home/lvuser/center_to_pickup_fwd_nor.csv"),
+        new MakeParallel(
+          new AutonTarget(1750),
+          new ActuateHPScoring(751, true)
+        ),
+        new ActuateHPScoring(150, false),
+        new DriveProfiles("/home/lvuser/test_rev_nor.csv"),
+        // new DriveProfiles("/home/lvuser/mid_to_rocket_close_fwd_nor.csv"),
+        new AutonTarget(1500),
+        //new  ElevatorProfiles(1),
+        new  HPScore()
+        //new  ElevatorProfiles(1)
         // ),
         // new  ActuateHPScoring(250, false)
     ));

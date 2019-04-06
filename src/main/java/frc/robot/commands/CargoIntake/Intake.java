@@ -46,7 +46,7 @@ public class Intake extends Command {
   @Override
   protected void execute() {
     intake.setExtended(extend);
-    GambeziDashboard.set_double("Intake Distance", intake.getCurrent());
+    GambeziDashboard.set_double("Intake/Distance", intake.getCurrent());
   }
 
   // Make this return true when this Command no longer needs to run execute()
