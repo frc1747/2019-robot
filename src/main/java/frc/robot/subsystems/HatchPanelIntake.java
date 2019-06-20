@@ -31,7 +31,7 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
   double wristOffset;
   double setPoint;
   DigitalInput jumper;
-  public static double[] positions = {1.33, Math.PI/2 + 0.5, Math.PI};
+  public static double[] positions = {0, Math.PI/2 + 0.5, Math.PI};
 
   public HatchPanelIntake(){
     jumper = Robot.getJumper();
@@ -80,21 +80,32 @@ public class HatchPanelIntake extends HBRSubsystem<HatchPanelIntake.Follower> {
 		// } else {
 		// 	return RobotMap.WRIST_ENCODER_GEAR * (5 + -encoder.getVoltage()) * 2 * Math.PI/5 - wristOffset;
     // }
-    if(jumper.get()){
+
+    // if(jumper.get()){
       // if(encoder.getVoltage() < 0.5){
       //   return ((encoder.getVoltage() + 1.43)-0.602)*Math.PI/1.149;
       // }else{
       //   return ((encoder.getVoltage())-0.602)*Math.PI/1.149;
       // }
-      if (encoder.getVoltage() * -1 < -2){
-        return (encoder.getVoltage() * -1 + 4.93 + 1.5) * Math.PI / 3.87;
-      } else {
-        return (encoder.getVoltage() * -1 + 1.5) * Math.PI / 3.87;
-      }
-    }
+    //   if (encoder.getVoltage() * -1 < -2){
+    //     return -1 * ((encoder.getVoltage() * -1 + 4.93 + 1.5) * Math.PI / 3.87) + 3.14;
+    //   } else {
+    //     return -1 * ((encoder.getVoltage() * -1 + 1.5) * Math.PI / 3.87) + 3.14;
+    //   }
+    // }
+      // return encoder.getVoltage();
     // return (encoder.getVoltage() - 0.95) * Math.PI/3.87;
-    return 1;
-    // return encoder.getVoltage();
+    // return 1;
+    // if (encoder.getVoltage() > 1.4){
+    //   return (encoder.getVoltage() - 1.44 - 0.15) * Math.PI / 1.11;
+    // }else{
+    //   return (encoder.getVoltage() - 0.15) * Math.PI / 1.11;
+    // }
+    if(encoder.getVoltage() < 0.5){
+      return  (encoder.getVoltage() + 1.44 - 0.74) * Math.PI / 1.13;
+    }else{
+      return (encoder.getVoltage() - 0.74) * Math.PI / 1.13;
+    }
   }
 
 

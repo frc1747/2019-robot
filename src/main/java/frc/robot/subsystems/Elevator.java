@@ -64,7 +64,7 @@ public class Elevator extends HBRSubsystem <Elevator.Follower> {
     public double getSetPoint(){
       return setPoint;
     }
-    
+
     public void pidWrite(double[] power) {
       if(getDistance() <= 5 && setPoint < 5){
         setPower(0);

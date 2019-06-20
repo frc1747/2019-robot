@@ -12,6 +12,7 @@ import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import lib.frc1747.controller.Xbox;
@@ -21,6 +22,7 @@ public class DriveWithJoysticks extends Command {
   Drivetrain drivetrain;
   double leftVert;
   double rightHoriz;
+  double theoreticalMax;
   // boolean state = false;
   // boolean laststate = false;
   boolean shouldstop = true;
@@ -83,22 +85,33 @@ public class DriveWithJoysticks extends Command {
 
       leftVert = OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) ;
       rightHoriz = -OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) ;
+    if (OI.getInstance().getOperator().getRTButton().get()){
+      theoreticalMax = RobotMap.ACTUAL_S_V_MAX;
+    } else {
+      theoreticalMax = RobotMap.S_V_MAX;
+    }
     if(Elevator.getInstance().getDistance() > 30){
-
-                                           // ^^ was previously 25
-
-      drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) * RobotMap.S_V_MAX/5);
-      drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, -OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * RobotMap.A_V_MAX/5);
-      // drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, (OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) * RobotMap.S_V_MAX)/(Elevator.getInstance().getElevatorPosition()/(83.5/5)));
-      // drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, (-OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * RobotMap.A_V_MAX)/(Elevator.getInstance().getElevatorPosition()/(83.5/5)));  
+      
+        drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) * RobotMap.S_V_MAX/5);
+        drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, -OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * RobotMap.A_V_MAX/5);
+        // drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, (OI.getInstance().getDriver().getAxis(Xbox.LEFT_VERTICAL) * RobotMap.S_V_MAX)/(Elevator.getInstance().getElevatorPosition()/(83.5/5)));
+        // drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, (-OI.getInstance().getDriver().getAxis(Xbox.RIGHT_HORIZONTAL) * RobotMap.A_V_MAX)/(Elevator.getInstance().getElevatorPosition()/(83.5/5)));
     }else{
       if (OI.getInstance().getDriver().getLTButton().get()){
-        drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX / 5);
+        drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * theoreticalMax / 5);
         drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX / 5);
       } else {
-        drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * RobotMap.S_V_MAX);
-        drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX);
+        if (OI.getInstance().getDriver().getRTButton().get()){
+          drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * theoreticalMax);
+          drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX / 3 * 2);
+  
+        }else{
+         drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, leftVert * leftVert * leftVert * theoreticalMax);
+          drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, rightHoriz * rightHoriz * rightHoriz * RobotMap.A_V_MAX);
+        }
       }
+
+      
     }
   }
 

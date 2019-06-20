@@ -8,9 +8,12 @@
 package frc.robot.commands.Auton;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.Drivetrain.DriveDistance;
 import frc.robot.commands.Drivetrain.DriveProfiles;
+import frc.robot.commands.Elevator.ElevatorProfiles;
 import frc.robot.commands.HatchPanelScoring.ActuateHPScoring;
 import frc.robot.commands.HatchPanelScoring.HPScore;
+import frc.robot.subsystems.Elevator;
 import lib.frc1747.commands.MakeParallel;
 import lib.frc1747.commands.MakeSequential;
 
@@ -20,19 +23,22 @@ public class JosephBellAutonRight extends CommandGroup {
     addSequential(new MakeSequential(
       new  DriveProfiles("/home/lvuser/Joseph_Bell_test1_fwd_mir.csv"),
       new AutonTarget(1500),
+      new ElevatorProfiles(2),
       new  HPScore(),
+      new ElevatorProfiles(1),
 
       new  DriveProfiles("/home/lvuser/Joseph_Bell_test2_rev_mir.csv"),
 
       new MakeParallel(
-        new AutonTarget(1750),
+        new AutonTarget(2000),
         new ActuateHPScoring(751, true)
       ),
         
-      new ActuateHPScoring(150, false),
-      new DriveProfiles("/home/lvuser/Joseph_Bell_test3_rev_mir.csv"),
+      new ActuateHPScoring(500, false),
+      new DriveProfiles("/home/lvuser/backup_rev_nor.csv")
+      // new DriveProfiles("/home/lvuser/Joseph_Bell_test3_rev_mir.csv"),
 
-      new AutonTarget(1500)
+      // new AutonTarget(1500)
       //new HPScore(),
 
       //new DriveProfiles("/home/lvuser/Joseph_Bell_test4_rev_mir.csv")

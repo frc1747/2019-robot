@@ -82,11 +82,13 @@ public class DriveToTarget2 extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    stage = 1;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     currentDistance = (drivetrain.getLeftDistance()+drivetrain.getRightDistance())/2;
     currentAngle = drivetrain.getAngle();
     currentDistance = (drivetrain.getLeftDistance()+drivetrain.getRightDistance())/2;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     drivetrain.setMode(Drivetrain.Follower.DISTANCE, HBRSubsystem.Mode.PID);
     drivetrain.setPIDMode(Drivetrain.Follower.DISTANCE, HBRSubsystem.PIDMode.VELOCITY);
@@ -133,11 +135,12 @@ public class DriveToTarget2 extends Command {
       ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
-      GambeziDashboard.set_double("limelight/tx0", tx0);
-      GambeziDashboard.set_double("limelight/tx1", tx1);
-      GambeziDashboard.set_double("limelight/ty0", ty0);
-      GambeziDashboard.set_double("limelight/ty1", ty1);
+      // GambeziDashboard.set_double("limelight/tx0", tx0);
+      // GambeziDashboard.set_double("limelight/tx1", tx1);
+      // GambeziDashboard.set_double("limelight/ty0", ty0);
+      // GambeziDashboard.set_double("limelight/ty1", ty1);
 
       x0 = vpw/(2) * tx0;
       y0 = vph/(2) * ty0;
@@ -149,35 +152,35 @@ public class DriveToTarget2 extends Command {
       ax1 = Math.atan2(x1, 1);
       ay1 = Math.atan2(y1, 1);
 
-      GambeziDashboard.set_double("limelight/ax0", ax0);
-      GambeziDashboard.set_double("limelight/ax1", ax1);
-      GambeziDashboard.set_double("limelight/ay0", ay0);
-      GambeziDashboard.set_double("limelight/ay1", ay1);
+      // GambeziDashboard.set_double("limelight/ax0", ax0);
+      // GambeziDashboard.set_double("limelight/ax1", ax1);
+      // GambeziDashboard.set_double("limelight/ay0", ay0);
+      // GambeziDashboard.set_double("limelight/ay1", ay1);
       avTheta = (ax0 + ax1)/2;
-      GambeziDashboard.set_double("limelight/avTheta", avTheta);
+      // GambeziDashboard.set_double("limelight/avTheta", avTheta);
 
       d0 = 0.5 * (h2 - h1) / Math.tan(ay0);
       d1 = 0.5 * (h2 - h1) / Math.tan(ay1);
-      GambeziDashboard.set_double("limelight/d0", d0);
-      GambeziDashboard.set_double("limelight/d1", d1);
+      // GambeziDashboard.set_double("limelight/d0", d0);
+      // GambeziDashboard.set_double("limelight/d1", d1);
 
       o0 = d0 * Math.tan(ax0);
       o1 = d1 * Math.tan(ax1);
-      GambeziDashboard.set_double("limelight/o0", o0);
-      GambeziDashboard.set_double("limelight/o1", o1);
+      // GambeziDashboard.set_double("limelight/o0", o0);
+      // GambeziDashboard.set_double("limelight/o1", o1);
 
       // phi = Math.acos((o1-o0)/10.5);
       // leg = Math.sqrt(10.5 * 10.5-(o1 - o0) * (o1 - o0));
       phi = Math.atan2(d1 - d0, o1 - o0)/2.75;
-      GambeziDashboard.set_double("limelight/phi", phi);
-      GambeziDashboard.set_double("limelight/newphi", Math.atan2(leg, o1 - o0));
+      // GambeziDashboard.set_double("limelight/phi", phi);
+      // GambeziDashboard.set_double("limelight/newphi", Math.atan2(leg, o1 - o0));
 
       j0 = o0 * Math.tan(phi);
       j1 = o1 * Math.tan(phi);
-      GambeziDashboard.set_double("limelight/tanphi", Math.tan(phi));
+      // GambeziDashboard.set_double("limelight/tanphi", Math.tan(phi));
 
-      GambeziDashboard.set_double("limelight/j0", j0);
-      GambeziDashboard.set_double("limelight/j1", j1);
+      // GambeziDashboard.set_double("limelight/j0", j0);
+      // GambeziDashboard.set_double("limelight/j1", j1);
 
       // avJ = (j0+j1)/2;
       // if(Math.abs(ta0) > Math.abs(ta1)){
@@ -186,15 +189,19 @@ public class DriveToTarget2 extends Command {
       //   leftSide = false;
       // }
       try{
-        GambeziDashboard.set_double("limelight/xCorner 2", xCorners[2]);
-        GambeziDashboard.set_double("limelight/xCorner 5", xCorners[5]);
-        GambeziDashboard.set_double("limelight/yCorner 2", yCorners[2]);
-        GambeziDashboard.set_double("limelight/yCorner 5", yCorners[5]);
+        // GambeziDashboard.set_double("limelight/xCorner 2", xCorners[2]);
+        // GambeziDashboard.set_double("limelight/xCorner 5", xCorners[5]);
+        // GambeziDashboard.set_double("limelight/yCorner 2", yCorners[2]);
+        // GambeziDashboard.set_double("limelight/yCorner 5", yCorners[5]);
+        GambeziDashboard.set_double("limelight/2 y", yCorners[2]);
+        GambeziDashboard.set_double("limelight/5 y", yCorners[5]);
+        GambeziDashboard.set_double("limelight/2 x", xCorners[2]);
+        GambeziDashboard.set_double("limelight/5 x", xCorners[5]);
         if(xCorners[2] > xCorners[5]){
           GambeziDashboard.set_boolean("limelight/2 on right", true);
           two_right = true;
         }else{
-          GambeziDashboard.set_boolean("limelight/2 on right", false);
+          GambeziDashboard.set_boolean("limelight/2 on rig0ht", false);
           two_right = false;
         }
         if(yCorners[2] < yCorners[5]){
@@ -218,6 +225,13 @@ public class DriveToTarget2 extends Command {
             leftSide = true;
           }
         }
+        if(Math.abs(yCorners[2] - yCorners[5]) < 2){
+          if(tx > 0){
+            leftSide = true;
+          }else{
+            leftSide = false;
+          }
+        }
       }
       catch(Exception e) {
         if (ty0 < ty1){
@@ -236,11 +250,11 @@ public class DriveToTarget2 extends Command {
       // yDist = (d0 - j0) * Math.cos(phi);
       xDist = 1.25 * yDist / Math.tan(Math.PI / 2 - phi - avTheta) ;
 
-      GambeziDashboard.set_double("limelight/xDist", xDist);
+      // GambeziDashboard.set_double("limelight/xDist", xDist);
       GambeziDashboard.set_double("limelight/yDist", yDist);
       drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, 4);
       drivetrain.setEnabled(true);
-      GambeziDashboard.set_double("limelight/aRatio", ta0/ta1);
+      // GambeziDashboard.set_double("limelight/aRatio", ta0/ta1);
       if(0.95 < (ta0/ta1) && (ta0/ta1) < 1.05){
         centered = true;
       }else{
@@ -249,12 +263,6 @@ public class DriveToTarget2 extends Command {
       if(xDist > 36){
         xDist = 36;
       }
-      // if(xDist >= 0){
-      //   leftSide = true;
-      // }else{
-      //   leftSide = false;
-      // }
-
     }
     currentAngle = drivetrain.getAngle();
   }
@@ -272,9 +280,13 @@ public class DriveToTarget2 extends Command {
       angleSetpoint = ax0;
       // angleSetpoint = -Math.PI/4;
     }
+    
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-    GambeziDashboard.set_double("D2T/Angle Error", drivetrain.getAngle() - (currentAngle - phi - angleSetpoint));
+
+    // GambeziDashboard.set_double("D2T/Angle Error", drivetrain.getAngle() - (currentAngle - phi - angleSetpoint));
     if(stage == 1) {
       if(Math.abs(drivetrain.getAngle() - (currentAngle - phi - angleSetpoint)) > 0.05) {
         drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, -(drivetrain.getAngle() - (currentAngle - phi - angleSetpoint)) * 1 * RobotMap.A_V_MAX);
@@ -286,7 +298,7 @@ public class DriveToTarget2 extends Command {
     }
     if(stage == 2){
       xDistscaled = Math.abs(xDist / Math.cos(Math.PI/2 - 2*phi - angleSetpoint));
-      GambeziDashboard.set_double("limelight/xDistscaled", xDistscaled);
+      // GambeziDashboard.set_double("limelight/xDistscaled", xDistscaled);
       if(Math.abs(xDistscaled) > 24){
         xDistscaled = 24;
       }

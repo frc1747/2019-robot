@@ -24,6 +24,8 @@ public class ElevatorProfiles extends Command {
   int stage;
   Elevator.ElevatorPositions pos;
   public ElevatorProfiles(Elevator.ElevatorPositions pos){
+    // pos = null;
+    // position = null;
     this.pos = pos;
     stage = 1;
     elevator = Elevator.getInstance();
@@ -31,17 +33,19 @@ public class ElevatorProfiles extends Command {
     setInterruptible(false);
   }
   public ElevatorProfiles(int stage) {
+    // pos = null;
+    // position = null;
     this.stage = stage;
     elevator = Elevator.getInstance();
     requires(elevator);
     setInterruptible(false);
-    
   }
   
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() { 
+    System.out.println("Initialize--------------------------");
     if(stage == 1){
       if(CargoScoring.getInstance().sensorActivated() || OI.getInstance().getOperator().getDPad(Xbox.DOWN).get()){
         this.position = Elevator.ElevatorPositions.C1;
@@ -68,19 +72,20 @@ public class ElevatorProfiles extends Command {
       this.position = pos;
     }
 
+    // System.out.println(pos.toString());
+    System.out.println(position.toString());
     if(Math.abs(Elevator.positions[position.ordinal()] - elevator.getDistance()) >= 1){
       double[][][] profiles = HBRSubsystem.generateSkidSteerPseudoProfile(Elevator.positions[position.ordinal()] - elevator.getDistance(), 0, Parameters.I_SAMPLE_LENGTH * 12, 120, 200, 9000.1, Parameters.W_WIDTH, RobotMap.DT, true, true);
-      
+      System.out.println(profiles[0][10][0]);
       for(int i = 0; i < profiles[0].length; i++){
         profiles[0][i][0] += elevator.getDistance();
       }
-
       elevator.setMode(Elevator.Follower.ELEVATOR, HBRSubsystem.Mode.FOLLOWER);
       elevator.setPIDMode(Elevator.Follower.ELEVATOR, HBRSubsystem.PIDMode.POSITION);
       elevator.setILimit(Elevator.Follower.ELEVATOR, 0);
       elevator.setOutputLimit(Elevator.Follower.ELEVATOR, 0.775);
-      elevator.setFeedforward(Elevator.Follower.ELEVATOR, 0, GambeziDashboard.get_double("Elevator/kV"), GambeziDashboard.get_double("Elevator/kA"));
-      elevator.setFeedback(Elevator.Follower.ELEVATOR, GambeziDashboard.get_double("Elevator/P"), GambeziDashboard.get_double("Elevator/I"), GambeziDashboard.get_double("Elevator/D"));
+      elevator.setFeedforward(Elevator.Follower.ELEVATOR, 0, 0.0125, 0.0015);
+      elevator.setFeedback(Elevator.Follower.ELEVATOR, 0.18, 0, 0.012);
       elevator.resetIntegrator(Elevator.Follower.ELEVATOR);
       elevator.setProfile(Elevator.Follower.ELEVATOR, profiles[0]);
       elevator.resume(Elevator.Follower.ELEVATOR);

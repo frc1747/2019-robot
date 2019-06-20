@@ -27,8 +27,8 @@ public class RobotMap {
 
 
   // encoder scalings
-  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10 * 9.67 / 10 * 10.46/10;
-  public static final double RIGHT_ENCODER_SCALING = 1280.8 * 9.6 / 10 * 10.2 / 10 * 10.34/10;
+  public static final double LEFT_ENCODER_SCALING = 1262.8 * 10.2 / 10 * 9.67 / 10 * 10.46/10 * 9.891426424413035 / 10;
+  public static final double RIGHT_ENCODER_SCALING = 1280.8 * 9.6 / 10 * 10.2 / 10 * 10.34/10 * 9.916712124011383 / 10;
 
   public static final double LIFT_ENCODER_SCALING = 1;
 
@@ -83,6 +83,7 @@ public class RobotMap {
   // misc. constants
   public static final double DT = 0.02;
   public static final double S_V_MAX = 13;
+  public static final double ACTUAL_S_V_MAX = 17.3 ;
   public static final double A_V_MAX = 4;
   public static final double SENSOR_THRESHOLD = 2.5; //check this value
   public static final double WRIST_ENCODER_GEAR = 18. / 28;

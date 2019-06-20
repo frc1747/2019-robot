@@ -31,14 +31,11 @@ public class Roller extends Subsystem {
   public double getRollerSpeed() {
     return roller.getMotorOutputPercent();
   }
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
 
   @Override
   public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
   }
+  
   public static Roller getInstance(){
     if(rollersub == null){
       rollersub = new Roller();

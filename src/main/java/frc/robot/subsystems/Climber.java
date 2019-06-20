@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -18,17 +19,17 @@ import lib.frc1747.subsytems.HBRSubsystem;
 public class Climber extends HBRSubsystem<Climber.Follower> {
 
   static Climber climb;
-  private TalonSRX liftMotor;
+  public VictorSPX liftMotor;
   private Encoder encoder;
-  private static double[] positions = {0.5, 27};
+  public static double[] positions = {0.5, 27};
 
   public Climber(){
-    liftMotor = new TalonSRX(RobotMap.LIFT_MOTOR_PORT);
-    encoder = new Encoder(RobotMap.LIFT_ENCODER_PORT_1, RobotMap.LIFT_ENCODER_PORT_2);
+    liftMotor = new VictorSPX(RobotMap.LIFT_MOTOR_PORT);
+    // encoder = new Encoder(RobotMap.LIFT_ENCODER_PORT_1, RobotMap.LIFT_ENCODER_PORT_2);
   }
 
   public void setPower(double power){
-    liftMotor.set(ControlMode.PercentOutput, power);
+    liftMotor.set(ControlMode.PercentOutput, -power);
   }
 
   public enum Follower{
@@ -60,7 +61,6 @@ public class Climber extends HBRSubsystem<Climber.Follower> {
     GambeziDashboard.set_double("Climber/setpoint", vars[0]);
     GambeziDashboard.set_double("Climber/actualposition", vars[1]);
   }
-  
 
   public static Climber getInstance(){
     if(climb == null){
@@ -69,8 +69,20 @@ public class Climber extends HBRSubsystem<Climber.Follower> {
     return climb;
   }
 
+  public double getVoltage(){
+    return liftMotor.getMotorOutputVoltage();
+  }
+
+  public double getCurrent(){
+    return 1;
+  }
+
+  public void resetEncoder() {
+    encoder.reset();
+  }
+
   public double getCurrentHeight(){
-    return encoder.getDistance();
+    return encoder.get() * RobotMap.LIFT_ENCODER_SCALING;
   }
 
   public double getCurrentSpeed() {

@@ -7,22 +7,28 @@
 
 package frc.robot;
 
+import frc.robot.commands.Auton.AutonTarget;
 import frc.robot.commands.Auton.Stop;
 import frc.robot.commands.CargoIntake.Intake;
 import frc.robot.commands.CargoScoring.AutonOutake;
 import frc.robot.commands.CargoScoring.Outtake;
+import frc.robot.commands.Climber.ClimberMacro;
 import frc.robot.commands.Climber.ExtendClimber;
+import frc.robot.commands.Climber.ManualLift;
 import frc.robot.commands.Drivetrain.DriveProfiles;
 import frc.robot.commands.Drivetrain.DriveToTarget2;
 import frc.robot.commands.Elevator.ElevatorProfiles;
 import frc.robot.commands.Elevator.HatchFinal;
 import frc.robot.commands.Elevator.ZeroElevator;
+import frc.robot.commands.Extension.Extend;
+import frc.robot.commands.General.MotorTest;
 import frc.robot.commands.HatchPanelIntake.GroundIntake2;
 import frc.robot.commands.HatchPanelIntake.Handoff;
 import frc.robot.commands.HatchPanelScoring.Beak;
 import frc.robot.commands.HatchPanelScoring.HPScore;
 // import frc.robot.commands.HatchPanelScoring.WeakAuton;
 import frc.robot.subsystems.Elevator;
+import lib.frc1747.commands.MakeSequential;
 import lib.frc1747.controller.Xbox;
 
 /**
@@ -88,8 +94,7 @@ public class OI {
     // driver.getButton(Xbox.Y).whenPressed(new DriveTargetPath());
     driver.getButton(Xbox.Y).whenPressed(new DriveToTarget2());
 
-    driver.getButton(Xbox.B).whenPressed(new DriveToTarget2());
-//
+    driver.getButton(Xbox.B).whenPressed(new AutonTarget(3000));
     driver.getButton(Xbox.LB).whenPressed(new Beak());
 
     driver.getDPad(Xbox.UP).whenPressed(new Handoff());
@@ -97,16 +102,27 @@ public class OI {
   }
 
   public void programmer(){
-    
 
     // programmer.getButton(Xbox.A).whenPressed(new DriveProfiles("/home/lvuser/Joseph_Bell_test1_fwd_mir.csv"));
     // programmer.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/Joseph_Bell_test2_rev_mir.csv"));    programmer.getButton(Xbox.A).whenPressed(new DriveProfiles("/home/lvuser/Joseph_Bell_test1_fwd_nor.csv"));
     // programmer.getButton(Xbox.Y).whenPressed(new DriveProfiles("/home/lvuser/pickup_to_close_cargo_rev_mir.csv"));    programmer.getButton(Xbox.A).whenPressed(new DriveProfiles("/home/lvuser/Joseph_Bell_test1_fwd_nor.csv"));
     // programmer.getButton(Xbox.X).whenPressed(new DriveProfiles("/home/lvuser/Joseph_Bell_test4_fwd_nor.csv"));
-  
-  programmer.getButton(Xbox.A).whenPressed(new DriveProfiles("/home/lvuser/platform_to_close_side_cargo_fwd_mir.csv"));
-  programmer.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/close_side_cargo_to_pickup_rev_mir.csv"));
-  programmer.getButton(Xbox.Y).whenPressed(new DriveProfiles("/home/lvuser/pickup_to_center_cargo_rev_mir.csv"));
+   
+  // programmer.getButton(Xbox.A).whenPressed(new DriveProfiles("/home/lvuser/platform_to_close_side_cargo_fwd_mir.csv"));
+  // programmer.getButton(Xbox.B).whenPressed(new DriveProfiles("/home/lvuser/close_side_cargo_to_pickup_rev_mir.csv"));
+  // programmer.getButton(Xbox.Y).whenPressed(new DriveProfiles("/home/lvuser/pickup_to_center_cargo_rev_mir.csv"));
+
+  programmer.getLTButton().whenPressed(new DriveProfiles("/home/lvuser/Quincys_Test_3_rev_mir.csv"));
+  programmer.getRTButton().whenPressed(new AutonTarget(1750));
+  programmer.getButton(Xbox.X).whenPressed(new ManualLift(0.8));
+  programmer.getButton(Xbox.X).whenReleased(new ManualLift(0));
+  programmer.getButton(Xbox.B).whenPressed(new ManualLift(-0.4));
+  programmer.getButton(Xbox.B).whenReleased(new ManualLift(0));
+  programmer.getButton(Xbox.Y).whenPressed(new Extend());
+  programmer.getLTButton().whenPressed(new MotorTest());
+}
+  public void makeClimb(){
+    // programmer.getButton(Xbox.A).whenPressed(new ClimberMacro());
   }
 
   public static OI getInstance() {

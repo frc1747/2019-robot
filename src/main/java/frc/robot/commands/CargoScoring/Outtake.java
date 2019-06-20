@@ -8,9 +8,7 @@
 package frc.robot.commands.CargoScoring;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.CargoScoring;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Extension;
@@ -35,12 +33,11 @@ public class Outtake extends Command {
   @Override
   protected void initialize() {
     if(Elevator.getInstance().getSetPoint() == 34){
-      extend.setExtended(false);
-      intake.setPower(-0.75);
-    }else{
-      extend.setExtended(true);
-      intake.setPower(power);
-
+        extend.setExtended(false);
+        intake.setPower(-0.75);
+    }else{   
+        extend.setExtended(true);
+        intake.setPower(power);
     }
   }
 

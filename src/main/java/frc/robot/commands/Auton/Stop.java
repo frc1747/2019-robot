@@ -10,6 +10,7 @@ package frc.robot.commands.Auton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.CargoIntake;
 import frc.robot.subsystems.CargoScoring;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchPanelIntake;
@@ -24,6 +25,7 @@ public class Stop extends Command {
   HatchPanelScoring hScore;
   Elevator elevator;
   Extension extend;
+  Climber climber;
 
   public Stop() {
     drive = Drivetrain.getInstance();
@@ -33,6 +35,8 @@ public class Stop extends Command {
     hScore = HatchPanelScoring.getInstance();
     elevator = Elevator.getInstance();
     extend = Extension.getInstance();
+    climber = Climber.getInstance();
+    requires(climber);
     requires(drive);
     requires(cIntake);
     requires(hIntake);

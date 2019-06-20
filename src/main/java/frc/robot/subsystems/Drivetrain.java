@@ -187,6 +187,19 @@ public class Drivetrain extends HBRSubsystem<Drivetrain.Follower> {
 
     }
 
+    public void PowerSetMotorGroup(int group, double power){
+      victor.set(ControlMode.PercentOutput, power);
+      // if (group == 0){
+      //   victor.set(ControlMode.PercentOutput, power);
+      // } else if (group == 1){
+      //   victor2.set(ControlMode.PercentOutput, power);
+      // } else if (group == 2){
+      //   talon.set(ControlMode.PercentOutput, power);
+      // } else if (group == 3){
+      //   talon2.set(ControlMode.PercentOutput, power);
+      // }
+    }
+
     public double getCurrent(){
       return talon.getOutputCurrent() + talon2.getOutputCurrent();
     }
