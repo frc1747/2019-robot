@@ -19,7 +19,7 @@ public class HPScore extends CommandGroup {
    */
   public HPScore() {
     addSequential(new MakeSequential(
-      new MakeParallel(  
+      new MakeParallel( 
         new AutonExtend(250, true),
         new MakeSequential(
           new Delay(100),

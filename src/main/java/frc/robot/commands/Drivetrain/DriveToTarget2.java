@@ -84,7 +84,7 @@ public class DriveToTarget2 extends Command {
   protected void initialize() {
     stage = 1;
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("snapshot").setNumber(1);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     currentDistance = (drivetrain.getLeftDistance()+drivetrain.getRightDistance())/2;
     currentAngle = drivetrain.getAngle();
     currentDistance = (drivetrain.getLeftDistance()+drivetrain.getRightDistance())/2;
@@ -135,7 +135,7 @@ public class DriveToTarget2 extends Command {
       ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+      // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
       // GambeziDashboard.set_double("limelight/tx0", tx0);
       // GambeziDashboard.set_double("limelight/tx1", tx1);
@@ -282,7 +282,7 @@ public class DriveToTarget2 extends Command {
     }
     
     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
@@ -321,9 +321,9 @@ public class DriveToTarget2 extends Command {
       }
     }
     if(stage == 4){
-      double linearOutput = (44-ta) * 0.01 * RobotMap.S_V_MAX;
-      if (linearOutput > 3){
-        linearOutput = 3;
+      double linearOutput = (30.5-ta) * 0.01 * RobotMap.S_V_MAX; // 44
+      if (linearOutput > 6){ // 3
+        linearOutput = 6; // 3
       }
       drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, linearOutput);
       drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, -tx * 0.02 * RobotMap.A_V_MAX);

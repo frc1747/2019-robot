@@ -45,7 +45,7 @@ public class ElevatorProfiles extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() { 
-    System.out.println("Initialize--------------------------");
+    // System.out.println("Initialize--------------------------");
     if(stage == 1){
       if(CargoScoring.getInstance().sensorActivated() || OI.getInstance().getOperator().getDPad(Xbox.DOWN).get()){
         this.position = Elevator.ElevatorPositions.C1;

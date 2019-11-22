@@ -102,7 +102,7 @@ public class AutonTarget extends Command {
     drivetrain.setFeedback(Drivetrain.Follower.ANGLE, GambeziDashboard.get_double("Drivetrain/teleop Angle P"), 0, GambeziDashboard.get_double("Drivetrain/teleop Angle D")); // 0.14,0,0
     drivetrain.resetIntegrator(Drivetrain.Follower.ANGLE);
         // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
     if(tv > 0) {
       stage = 1;
@@ -135,7 +135,7 @@ public class AutonTarget extends Command {
       ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
       tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
       ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+      // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
 
       // GambeziDashboard.set_double("limelight/tx0", tx0);
       // GambeziDashboard.set_double("limelight/tx1", tx1);
@@ -276,7 +276,7 @@ public class AutonTarget extends Command {
       // angleSetpoint = -Math.PI/4;
     }
     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(3);
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
+    // NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
     // GambeziDashboard.set_double("Angle Error", drivetrain.getAngle() - (currentAngle - phi - ax1));
@@ -310,9 +310,9 @@ public class AutonTarget extends Command {
       }
     }
     if(stage == 4){
-      double linearOutput = (46-ta) * 0.01 * RobotMap.S_V_MAX;
-      if (linearOutput > 2.5){
-        linearOutput = 2.5;
+      double linearOutput = (30.5-ta) * 0.01 * RobotMap.S_V_MAX;
+      if (linearOutput > 6){ // 1.5
+        linearOutput = 6; // 1.5 
       }
       drivetrain.setSetpoint(Drivetrain.Follower.DISTANCE, linearOutput);
       drivetrain.setSetpoint(Drivetrain.Follower.ANGLE, -tx * 0.02 * RobotMap.A_V_MAX);
@@ -339,7 +339,7 @@ public class AutonTarget extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return System.currentTimeMillis() - startTime >= duration;
+    return System.currentTimeMillis() - startTime >= duration || stage == 5;
     // return hasRun && drivetrain.getAngle() == 2*phi + ax1;
   }
 

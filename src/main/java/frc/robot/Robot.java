@@ -10,6 +10,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.tigerhuang.gambezi.dashboard.GambeziDashboard;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -148,6 +149,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(0);
   }
 
   @Override
@@ -209,6 +211,7 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.start();
     // }
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setNumber(2);
     auton = new Autonomous(choices[choice%6],positions[pos%3]);
     // auton = new WeakAuton();
     auton.start();

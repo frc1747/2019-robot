@@ -82,9 +82,9 @@ public class RobotMap {
 
   // misc. constants
   public static final double DT = 0.02;
-  public static final double S_V_MAX = 13;
-  public static final double ACTUAL_S_V_MAX = 17.3 ;
-  public static final double A_V_MAX = 4;
+  public static final double S_V_MAX = 7.5; // 13
+  public static final double ACTUAL_S_V_MAX = 17;
+  public static final double A_V_MAX = 2; // 4
   public static final double SENSOR_THRESHOLD = 2.5; //check this value
   public static final double WRIST_ENCODER_GEAR = 18. / 28;
   public static final double WRIST_OFFSET = 2* Math.PI;

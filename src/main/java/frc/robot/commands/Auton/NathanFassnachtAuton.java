@@ -22,21 +22,22 @@ public class NathanFassnachtAuton extends CommandGroup {
   public NathanFassnachtAuton() {
     addSequential(new MakeSequential(
       new DriveProfiles("/home/lvuser/Joseph_Bell_test1_fwd_nor.csv"),
-      new AutonTarget(1500),
-      new ElevatorProfiles(2),
+      new AutonTarget(1325),
+      // new ElevatorProfiles(2),
       new HPScore(),
-      new ElevatorProfiles(1),
+      // new ElevatorProfiles(1),
 
       new  DriveProfiles("/home/lvuser/Joseph_Bell_test2_rev_nor.csv"),
-
+      
       new MakeParallel(
-        new AutonTarget(2000),
+        new AutonTarget(1750),
         new ActuateHPScoring(751, true)
       ),
         
       new ActuateHPScoring(500, false),
       new DriveProfiles("/home/lvuser/Nathan_Fassnacht_test_1_rev_nor.csv"),
-      new AutonTarget(1750),
+      new AutonTarget(2000),
+      new ElevatorProfiles(2),
       new HPScore(),
       new DriveProfiles("/home/lvuser/backup_rev_nor.csv")
     ));
